@@ -1,1 +1,10 @@
-%{"jazz": {:package, "0.2.1"}}
+%{"cowboy": {:hex, :cowboy, "1.0.0"},
+  "cowlib": {:hex, :cowlib, "1.0.0"},
+  "dotenv": {:hex, :dotenv, "0.0.3"},
+  "hackney": {:hex, :hackney, "0.14.1"},
+  "httpoison": {:hex, :httpoison, "0.5.0"},
+  "idna": {:hex, :idna, "1.0.1"},
+  "jazz": {:hex, :jazz, "0.2.1"},
+  "plug": {:hex, :plug, "0.8.1"},
+  "porcelain": {:hex, :porcelain, "2.0.0"},
+  "ranch": {:hex, :ranch, "1.0.0"}}
