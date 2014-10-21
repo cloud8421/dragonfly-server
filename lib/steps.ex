@@ -49,9 +49,13 @@ defmodule Steps do
 
   defp join_converts(converts, format) do
     [
-      "/usr/local/bin/convert - ",
-      Enum.join(converts, " #{format}:- | /usr/local/bin/convert - "),
+      "#{convert_command} - ",
+      Enum.join(converts, " #{format}:- | #{convert_command} - "),
       " #{format}:-"
     ] |> Enum.join("")
+  end
+
+  defp convert_command do
+    Application.get_env(:processor, :convert_command)
   end
 end

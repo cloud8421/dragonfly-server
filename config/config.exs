@@ -4,6 +4,13 @@ use Mix.Config
 
 config :storage, adapter: HttpAdapter
 
+config :web_server, acceptors: 200
+
+config :process_worker_pool, size: 50,
+  max_overflow: 5
+
+config :processor, convert_command: "/usr/local/bin/convert"
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,

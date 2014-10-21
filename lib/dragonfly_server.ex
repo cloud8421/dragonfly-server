@@ -9,8 +9,8 @@ defmodule DragonflyServer do
     worker_pool_options = [
       name: {:local, :dragonfly_worker_pool},
       worker_module: JobWorker,
-      size: 50,
-      max_overflow: 5
+      size: Application.get_env(:process_worker_pool, :size),
+      max_overflow: Application.get_env(:process_worker_pool, :max_overflow)
     ]
 
     children = [
@@ -22,7 +22,7 @@ defmodule DragonflyServer do
     ]
 
     Plug.Adapters.Cowboy.http WebServer, [], port: System.get_env("PORT") |> String.to_integer,
-                                             acceptors: 200,
+                                             acceptors: Application.get_env(:web_server, :acceptors),
                                              compress: true
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
