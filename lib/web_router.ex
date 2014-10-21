@@ -8,7 +8,13 @@ defmodule WebRouter do
   plug :dispatch
 
   get "/media/:payload/:filename" do
-    response = compute_image(payload)
+    response = case JobCacheStore.get(payload) do
+      nil ->
+        data = compute_image(payload)
+        JobCacheStore.set(payload, data)
+        data
+      content -> content
+    end
     send_resp(conn, 200, response)
   end
 

@@ -1,4 +1,4 @@
-defmodule ResponseCacheStore do
+defmodule JobCacheStore do
   use GenServer
   @cache_table_name :responses_cache
 
