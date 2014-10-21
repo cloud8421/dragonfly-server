@@ -8,14 +8,15 @@ defmodule WebRouter do
   plug :dispatch
 
   get "/media/:payload/:filename" do
-    response = case JobCacheStore.get(payload) do
+    {format, response} = case JobCacheStore.get(payload) do
       nil ->
-        data = compute_image(payload)
-        JobCacheStore.set(payload, data)
-        data
-      content -> content
+        {format, data} = compute_image(payload)
+        JobCacheStore.set(payload, format, data)
+        {format, data}
+      match -> match
     end
-    send_resp(conn, 200, response)
+    conn_with_headers = add_headers(conn, format, filename)
+    send_resp(conn_with_headers, 200, response)
   end
 
   match _ do
@@ -27,4 +28,12 @@ defmodule WebRouter do
       JobWorker.process(worker, payload)
     end)
   end
+
+  defp add_headers(conn, format, filename) do
+    with_ct = put_resp_header(conn, "Content-Type", header_for_format(format))
+    put_resp_header(with_ct, "Content-Disposition", "filename=\"#{filename}\"")
+  end
+
+  defp header_for_format("jpg"), do: "image/jpg"
+  defp header_for_format("png"), do: "image/png"
 end

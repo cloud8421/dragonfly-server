@@ -11,12 +11,13 @@ defmodule Job do
     |> Steps.to_command
   end
 
-  defp execute(%{fetch: path, shell: transformation_command}) do
-    adapter.fetch(path)
-    |> transform(transformation_command)
+  defp execute(%{fetch: path, shell: transformation_command, format: format}) do
+    data = adapter.fetch(path)
+           |> transform(transformation_command)
+    {format, data}
   end
-  defp execute(%{fetch: path}) do
-    adapter.fetch(path)
+  defp execute(%{fetch: path, format: format}) do
+    {format, adapter.fetch(path)}
   end
 
   defp transform(image_data, transformation_command) do

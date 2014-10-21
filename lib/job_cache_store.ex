@@ -5,12 +5,12 @@ defmodule JobCacheStore do
   def get(cache_key) do
     case :ets.lookup(@cache_table_name, cache_key) do
       [] -> nil
-      [{_key, content}] -> content
+      [{_key, format, content}] -> {format, content}
     end
   end
 
-  def set(cache_key, value) do
-    GenServer.cast(__MODULE__, {:set, cache_key, value})
+  def set(cache_key, format, value) do
+    GenServer.cast(__MODULE__, {:set, cache_key, format, value})
   end
 
   ## Callbacks
@@ -24,8 +24,8 @@ defmodule JobCacheStore do
     {:ok, []}
   end
 
-  def handle_cast({:set, cache_key, value}, state) do
-    :ets.insert(@cache_table_name, {cache_key, value})
+  def handle_cast({:set, cache_key, format, value}, state) do
+    :ets.insert(@cache_table_name, {cache_key, format, value})
     {:noreply, state}
   end
 end
