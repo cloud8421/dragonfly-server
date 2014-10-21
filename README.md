@@ -29,13 +29,11 @@ To install Imagemagick with png support, just "brew install jpeg libpng imagemag
 Communication with Imagemagick is managed by [Goon](https://github.com/alco/goon), a middleman needed to polyfill the incomplete Port
 implementation provided by Erlang (see [here](https://github.com/alco/porcelain/wiki/Implementation#the-middleman) for more information).
 
-Download the binary and add it to a directory available in your `$PATH`.
-
 ## App setup
 
-    $ mix deps.get
+    $ make setup
 
-This will install all needed packages.
+This will install all needed packages and download goon.
 
 Then, copy the example environment file and make the necessary adjustments.
 
