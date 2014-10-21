@@ -11,6 +11,8 @@ defmodule DragonflyServer do
       # worker(DragonflyServer.Worker, [arg1, arg2, arg3])
     ]
 
+    Plug.Adapters.Cowboy.http WebServer, []
+
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: DragonflyServer.Supervisor]
