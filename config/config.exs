@@ -2,7 +2,8 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :storage, adapter: Adapters.Http
+config :storage, adapter: Adapters.Http,
+  host: "http://contagious-assets.s3.amazonaws.com"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

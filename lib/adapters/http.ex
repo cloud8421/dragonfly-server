@@ -6,7 +6,7 @@ defmodule Adapters do
     end
 
     defp host do
-      System.get_env("S3_BASE_URL")
+      Application.get_env(:storage, :host)
     end
   end
 end
