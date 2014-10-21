@@ -11,7 +11,9 @@ defmodule DragonflyServer do
       # worker(DragonflyServer.Worker, [arg1, arg2, arg3])
     ]
 
-    Plug.Adapters.Cowboy.http WebServer, []
+    Plug.Adapters.Cowboy.http WebServer, [], port: System.get_env("PORT") |> String.to_integer,
+                                             acceptors: 200,
+                                             compress: true
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
