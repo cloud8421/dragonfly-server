@@ -1,4 +1,4 @@
-defmodule ProcessWorker do
+defmodule JobWorker do
   use GenServer
 
   ## Public api
@@ -18,7 +18,7 @@ defmodule ProcessWorker do
   end
 
   def handle_call({:process, job}, _from, state) do
-    data = Runner.process(job)
+    data = Job.process(job)
     {:reply, data, state}
   end
 end

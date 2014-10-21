@@ -8,7 +8,7 @@ defmodule DragonflyServer do
 
     worker_pool_options = [
       name: {:local, :dragonfly_worker_pool},
-      worker_module: ProcessWorker,
+      worker_module: JobWorker,
       size: 50,
       max_overflow: 5
     ]

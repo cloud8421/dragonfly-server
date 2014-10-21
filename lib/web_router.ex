@@ -7,7 +7,7 @@ defmodule WebRouter do
 
   get "/media/:payload/:filename" do
     processed = :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
-      ProcessWorker.process(worker, payload)
+      JobWorker.process(worker, payload)
     end)
     send_resp(conn, 200, processed)
   end
