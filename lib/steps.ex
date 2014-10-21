@@ -33,21 +33,26 @@ defmodule Steps do
     do_compact(tail, new_acc)
   end
 
+
   defp chain(%{fetch: [fetch], convert: converts, format: [format]}) do
-    [
+    %{
       fetch: fetch,
-      shell: join_converts(converts |> Enum.reverse),
+      shell: join_converts(converts |> Enum.reverse, format),
       format: format
-    ]
+    }
   end
   defp chain(%{fetch: [fetch], convert: converts}) do
     chain(%{fetch: [fetch], convert: converts, format: ["jpg"]})
   end
+  defp chain(%{fetch: [fetch]}) do
+    %{fetch: fetch}
+  end
 
-  defp join_converts(converts) do
+  defp join_converts(converts, format) do
     [
-      "convert - ",
-      Enum.join(converts, " jpg:- | convert - ")
+      "/usr/local/bin/convert - ",
+      Enum.join(converts, " jpg:- | /usr/local/bin/convert - "),
+      " jpg:-"
     ] |> Enum.join("")
   end
 end
