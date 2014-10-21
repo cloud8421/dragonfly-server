@@ -14,8 +14,8 @@ defmodule Runner do
   defp execute(%{fetch: path, shell: transformation_command}) do
     image_content = S3Client.fetch(path)
     opts = [in: image_content, out: :iodata]
-    %Porcelain.Result{out: ["", data]} = Porcelain.shell(transformation_command, opts)
-    data
+    result =  Porcelain.shell(transformation_command, opts)
+    IO.iodata_to_binary(result.out)
   end
   defp execute(%{fetch: path}) do
     S3Client.fetch(path)
