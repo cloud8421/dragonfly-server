@@ -15,7 +15,8 @@ defmodule DragonflyServer do
 
     children = [
       :poolboy.child_spec(:dragonfly_worker_pool, worker_pool_options, []),
-      worker(ResponseCacheStore, [])
+      worker(ResponseCacheStore, []),
+      worker(HttpAdapter, [])
       # Define workers and child supervisors to be supervised
       # worker(DragonflyServer.Worker, [arg1, arg2, arg3])
     ]
