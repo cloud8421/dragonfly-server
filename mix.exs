@@ -25,6 +25,7 @@ defmodule DragonflyServer.Mixfile do
   end
 
   defp app_list(:dev), do: [:dotenv | app_list]
+  defp app_list(:test), do: [:dotenv | app_list]
   defp app_list(_), do: app_list
   defp app_list do
     [:logger, :httpoison, :porcelain, :cowboy, :plug]

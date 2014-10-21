@@ -13,8 +13,8 @@ defmodule Steps do
     normalized = ["p", "convert", "-thumbnail #{size}", "jpg"]
     do_to_command([normalized | tail], acc)
   end
-  defp do_to_command([["p", "convert", instructions, _format] | tail], acc) do
-    do_to_command(tail, [{:convert, instructions} | acc])
+  defp do_to_command([["p", "convert", instructions, format] | tail], acc) do
+    do_to_command(tail, [{:format, format} | [{:convert, instructions} | acc]])
   end
   defp do_to_command([["e", format] | tail], acc) do
     do_to_command(tail, [{:format, format} | acc])
@@ -51,8 +51,8 @@ defmodule Steps do
   defp join_converts(converts, format) do
     [
       "/usr/local/bin/convert - ",
-      Enum.join(converts, " jpg:- | /usr/local/bin/convert - "),
-      " jpg:-"
+      Enum.join(converts, " #{format}:- | /usr/local/bin/convert - "),
+      " #{format}:-"
     ] |> Enum.join("")
   end
 end
