@@ -3,6 +3,7 @@ defmodule Steps do
   def to_command(steps) do
     do_to_command(steps, [])
     |> compact
+    |> chain
   end
 
   defp do_to_command([], acc), do: acc |> Enum.reverse
@@ -22,7 +23,6 @@ defmodule Steps do
 
   defp compact(commands) do
     do_compact(commands, %{})
-    |> chain
   end
 
   defp do_compact([], acc), do: acc
@@ -32,7 +32,6 @@ defmodule Steps do
     end)
     do_compact(tail, new_acc)
   end
-
 
   defp chain(%{fetch: [fetch], convert: converts, format: [format]}) do
     %{
