@@ -1,5 +1,7 @@
 # Dragonfly server
 
+[![Build Status](https://travis-ci.org/cloud8421/dragonfly-server.svg?branch=master)](https://travis-ci.org/cloud8421/dragonfly-server)
+
 This application can be used to serve Dragonfly urls.
 
 # Setup
