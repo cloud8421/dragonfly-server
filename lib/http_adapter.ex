@@ -5,6 +5,6 @@ defmodule HttpAdapter do
   end
 
   defp host do
-    Application.get_env(:storage, :host)
+    System.get_env("HTTP_HOST")
   end
 end
