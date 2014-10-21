@@ -3,6 +3,7 @@ defmodule WebRouter do
   use Plug.Router
 
   # Plug order matters, as they are inserted as middlewares
+  plug Plug.Logger
   plug Plug.Head
   plug :match
   plug :dispatch
