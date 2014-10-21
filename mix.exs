@@ -15,6 +15,7 @@ defmodule DragonflyServer.Mixfile do
 
   defp deps do
     [
+      {:poolboy, "~> 1.3.0"},
       {:dotenv, "~> 0.0.3"},
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 0.8.0"},

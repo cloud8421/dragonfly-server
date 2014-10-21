@@ -6,7 +6,9 @@ defmodule WebRouter do
   plug :dispatch
 
   get "/media/:payload/:filename" do
-    processed = Runner.process(payload)
+    processed = :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
+      ProcessWorker.process(worker, payload)
+    end)
     send_resp(conn, 200, processed)
   end
 
