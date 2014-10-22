@@ -42,7 +42,7 @@ defmodule WebRouter do
 
   defp add_headers(conn, format, filename) do
     with_ct = put_resp_header(conn, "Content-Type", header_for_format(format))
-    with_expiries = put_resp_header(conn, "cache-control", "public, max-age=#{@max_age}")
+    with_expiries = put_resp_header(with_ct, "cache-control", "public, max-age=#{@max_age}")
     put_resp_header(with_expiries, "Content-Disposition", "filename=\"#{filename}\"")
   end
 
