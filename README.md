@@ -68,3 +68,9 @@ From the command line:
     $ curl -XDELETE http://example.com/admin/media/12345
 
 The expected response is a `202`, which indicates that the cache expiry has been scheduled and will be performed asyncronously.
+
+## Deploy on Heroku
+
+You need a custom buildpack (it includes Goon).
+
+    $ heroku config:set BUILDPACK_URL="https://github.com/cloud8421/heroku-buildpack-elixir.git"
