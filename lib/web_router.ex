@@ -2,6 +2,8 @@ defmodule WebRouter do
   import Plug.Conn
   use Plug.Router
 
+  @max_age 31536000 # 1 year
+
   # Plug order matters, as they are inserted as middlewares
   plug Plug.Logger
   plug Plug.Head
@@ -40,7 +42,8 @@ defmodule WebRouter do
 
   defp add_headers(conn, format, filename) do
     with_ct = put_resp_header(conn, "Content-Type", header_for_format(format))
-    put_resp_header(with_ct, "Content-Disposition", "filename=\"#{filename}\"")
+    with_expiries = put_resp_header(conn, "cache-control", "public, max-age=#{@max_age}")
+    put_resp_header(with_expiries, "Content-Disposition", "filename=\"#{filename}\"")
   end
 
   defp header_for_format("jpg"), do: "image/jpg"
