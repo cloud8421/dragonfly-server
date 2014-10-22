@@ -8,7 +8,7 @@ defmodule WebRouter do
   plug :match
   plug :dispatch
 
-  delete "/:payload" do
+  delete "/admin/media/:payload" do
     :ok = expire_image(payload)
     send_resp(conn, 202, "Scheduled deletion")
   end
