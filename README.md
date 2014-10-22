@@ -71,6 +71,11 @@ The expected response is a `202`, which indicates that the cache expiry has been
 
 ## Deploy on Heroku
 
-You need a custom buildpack (it includes Goon).
+The app runs only on Cedar and requires the multi-buildpack as:
 
-    $ heroku config:set BUILDPACK_URL="https://github.com/cloud8421/heroku-buildpack-elixir.git"
+- it uses a custom Elixir buildback (it includes Goon)
+- it uses the imagemagick buildpack.
+
+Buildpacks are defined in `.buildpacks`.
+
+Please follow instructions at <https://github.com/ddollar/heroku-buildpack-multi>.
