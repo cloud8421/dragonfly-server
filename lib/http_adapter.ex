@@ -6,6 +6,10 @@ defmodule HttpAdapter do
     GenServer.call(__MODULE__, {:fetch, path})
   end
 
+  def expire(job) do
+    GenServer.cast(__MODULE__, {:expire, job.fetch})
+  end
+
   ## Callbacks
 
   def start_link do
@@ -26,6 +30,11 @@ defmodule HttpAdapter do
       [{^path, cached_data}] ->
         {:reply, cached_data, state}
     end
+  end
+
+  def handle_cast({:expire, path}, state) do
+    :ets.delete(@cache_table_name, path)
+    {:noreply, state}
   end
 
   ## Private

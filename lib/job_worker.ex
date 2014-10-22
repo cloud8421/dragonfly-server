@@ -7,6 +7,10 @@ defmodule JobWorker do
     GenServer.call(worker, {:process, job})
   end
 
+  def expire(worker, job) do
+    GenServer.call(worker, {:expire, job})
+  end
+
   ## Callbacks
 
   def start_link(_opts) do
@@ -20,5 +24,10 @@ defmodule JobWorker do
   def handle_call({:process, job}, _from, state) do
     data = Job.process(job)
     {:reply, data, state}
+  end
+
+  def handle_call({:expire, job}, _from, state) do
+    Job.expire(job)
+    {:reply, :ok, state}
   end
 end
