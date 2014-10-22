@@ -2,6 +2,10 @@ defmodule JobCacheStore do
   use GenServer
   @cache_table_name :responses_cache
 
+  def delete(cache_key) do
+    GenServer.cast(__MODULE__, {:delete, cache_key})
+  end
+
   def get(cache_key) do
     case :ets.lookup(@cache_table_name, cache_key) do
       [] -> nil
@@ -26,6 +30,11 @@ defmodule JobCacheStore do
 
   def handle_cast({:set, cache_key, format, value}, state) do
     :ets.insert(@cache_table_name, {cache_key, format, value})
+    {:noreply, state}
+  end
+
+  def handle_cast({:delete, cache_key}, state) do
+    :ets.delete(@cache_table_name, cache_key)
     {:noreply, state}
   end
 end

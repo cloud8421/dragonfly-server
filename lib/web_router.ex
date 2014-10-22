@@ -8,6 +8,11 @@ defmodule WebRouter do
   plug :match
   plug :dispatch
 
+  delete "/:payload" do
+    JobCacheStore.delete(payload)
+    send_resp(conn, 202, "Scheduled deletion")
+  end
+
   get "/media/:payload/:filename" do
     {format, response} = case JobCacheStore.get(payload) do
       nil ->
