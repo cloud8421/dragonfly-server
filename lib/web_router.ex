@@ -9,16 +9,13 @@ defmodule WebRouter do
   plug :dispatch
 
   delete "/:payload" do
-    JobCacheStore.delete(payload)
+    :ok = expire_image(payload)
     send_resp(conn, 202, "Scheduled deletion")
   end
 
   get "/media/:payload/:filename" do
     {format, response} = case JobCacheStore.get(payload) do
-      nil ->
-        {format, data} = compute_image(payload)
-        JobCacheStore.set(payload, format, data)
-        {format, data}
+      nil -> compute_image(payload)
       match -> match
     end
     conn_with_headers = add_headers(conn, format, filename)
@@ -32,6 +29,12 @@ defmodule WebRouter do
   defp compute_image(payload) do
     :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
       JobWorker.process(worker, payload)
+    end)
+  end
+
+  def expire_image(payload) do
+    :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
+      JobWorker.expire(worker, payload)
     end)
   end
 
