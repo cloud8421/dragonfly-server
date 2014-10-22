@@ -50,3 +50,21 @@ Starts the app and opens a console.
 ## Run tests
 
     $ mix test
+
+## Admin api
+
+The app exposes an admin api that can be used to programmatically expire an image and all its associated resources.
+
+Given an image url in the form of:
+
+    http://example.com/media/12345/untitled.jpg
+
+It can be deleted by sending a `DELETE` request to the following endpoint:
+
+    http://example.com/admin/media/12345
+
+From the command line:
+
+    $ curl -XDELETE http://example.com/admin/media/12345
+
+The expected response is a `202`, which indicates that the cache expiry has been scheduled and will be performed asyncronously.
