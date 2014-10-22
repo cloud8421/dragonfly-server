@@ -27,6 +27,9 @@ defmodule Job do
   defp execute(%{fetch: path, format: format}) do
     {format, adapter.fetch(path)}
   end
+  defp execute(%{fetch: path}) do
+    {"jpg", adapter.fetch(path)}
+  end
 
   defp transform(image_data, transformation_command) do
     opts = [in: image_data, out: :iodata]
