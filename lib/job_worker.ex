@@ -4,7 +4,7 @@ defmodule JobWorker do
   ## Public api
 
   def process(worker, job) do
-    GenServer.call(worker, {:process, job})
+    GenServer.call(worker, {:process, job}, http_timeout)
   end
 
   def expire(worker, job) do
@@ -30,4 +30,8 @@ defmodule JobWorker do
     Job.expire(job)
     {:reply, :ok, state}
   end
+
+  ## Private
+
+  defp http_timeout, do: Application.get_env(:processor, :http_timeout)
 end

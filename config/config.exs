@@ -2,12 +2,16 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :web_server, acceptors: 200
+config :web_server,
+  acceptors: 200
 
-config :process_worker_pool, size: 100,
+config :process_worker_pool,
+  size: 100,
   max_overflow: 20
 
-config :processor, convert_command: "/usr/local/bin/convert"
+config :processor,
+  convert_command: "/usr/local/bin/convert",
+  http_timeout: 10000
 
 config :logger, :console,
   level: :info,
