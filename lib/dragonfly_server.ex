@@ -1,6 +1,9 @@
 defmodule DragonflyServer do
   use Application
 
+  def job_cache_table_name, do: :job_cache
+  def http_adapter_cache_table_name, do: :http_adapter_cache
+
   def start(_type, _args) do
     Plug.Adapters.Cowboy.http WebServer, [], port: System.get_env("PORT") |> String.to_integer,
                                              acceptors: Application.get_env(:web_server, :acceptors),
@@ -44,7 +47,4 @@ defmodule DragonflyServer do
             name: DragonflyServer.CacheSupervisor]
     Supervisor.start_link(children, opts)
   end
-
-  def job_cache_table_name, do: :job_cache
-  def http_adapter_cache_table_name, do: :http_adapter_cache
 end
