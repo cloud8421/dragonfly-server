@@ -6,8 +6,8 @@ config :storage, adapter: HttpAdapter
 
 config :web_server, acceptors: 200
 
-config :process_worker_pool, size: 50,
-  max_overflow: 5
+config :process_worker_pool, size: 100,
+  max_overflow: 20
 
 config :processor, convert_command: "/usr/local/bin/convert"
 
