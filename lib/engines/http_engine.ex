@@ -47,6 +47,6 @@ defmodule HttpEngine do
   end
 
   defp table_name do
-    DragonflyServer.http_adapter_cache_table_name
+    DragonflyServer.http_engine_cache_table_name
   end
 end

@@ -2,7 +2,7 @@ defmodule DragonflyServer do
   use Application
 
   def job_cache_table_name, do: :job_cache
-  def http_adapter_cache_table_name, do: :http_adapter_cache
+  def http_engine_cache_table_name, do: :http_engine_cache
 
   def start(_type, _args) do
     Plug.Adapters.Cowboy.http WebServer, [], port: System.get_env("PORT") |> String.to_integer,
@@ -34,7 +34,7 @@ defmodule DragonflyServer do
     import Supervisor.Spec, warn: false
 
     :ets.new(job_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
-    :ets.new(http_adapter_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
+    :ets.new(http_engine_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
 
     children = [
       worker(JobCacheStore, []),
