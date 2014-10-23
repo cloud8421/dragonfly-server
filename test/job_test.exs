@@ -14,4 +14,10 @@ defmodule JobTest do
     expected = %{fetch: "#{System.get_env("HTTP_HOST")}/attachments/20141020T085657-7831/Sainsbury's Spooky Speaker - image 1.jpg"}
     assert(expected == Job.to_command(payload))
   end
+
+  test "supports local files" do
+    payload = "W1siZmYiLCIvYXBwL2FwcC9hc3NldHMvaW1hZ2VzL2RlZmF1bHRfYXJ0aWNsZV9pbWFnZS5wbmciXSxbInAiLCJ0aHVtYiIsIjEwMHgxMDAjIl0sWyJlIiwianBnIl1d"
+    expected = %{file: "/app/app/assets/images/default_article_image.png", format: "jpg", shell: "/usr/local/bin/convert - -thumbnail 100x100# jpg:-"}
+    assert(expected == Job.to_command(payload))
+  end
 end

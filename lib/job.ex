@@ -23,6 +23,7 @@ defmodule Job do
   def do_expire(%{fetch: url}) do
     HttpEngine.expire(url)
   end
+  def do_expire(_), do: nil
 
   def default_image_format, do: "jpg"
 
@@ -38,6 +39,18 @@ defmodule Job do
     {default_image_format, fetch(url)}
   end
 
+  defp execute(%{file: path, shell: transformation_command, format: format}) do
+    data = file(path)
+           |> transform(transformation_command)
+    {format, data}
+  end
+  defp execute(%{file: path, format: format}) do
+    {format, file(path)}
+  end
+  defp execute(%{file: path}) do
+    {default_image_format, file(path)}
+  end
+
   defp transform(image_data, transformation_command) do
     opts = [in: image_data, out: :iodata]
     result = Porcelain.shell(transformation_command, opts)
@@ -45,4 +58,5 @@ defmodule Job do
   end
 
   defp fetch(url), do: HttpEngine.fetch(url)
+  defp file(path), do: FsEngine.fetch(path)
 end

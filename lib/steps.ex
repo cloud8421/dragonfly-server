@@ -14,6 +14,9 @@ defmodule Steps do
   defp do_to_command([["fu" | [url]] | tail], acc) do
     do_to_command(tail, [{:fetch, url} | acc])
   end
+  defp do_to_command([["ff" | [path]] | tail], acc) do
+    do_to_command(tail, [{:file, path} | acc])
+  end
   defp do_to_command([["p", "thumb", size] | tail], acc) do
     normalized = ["p", "convert", "-thumbnail #{size}", default_image_format]
     do_to_command([normalized | tail], acc)
@@ -37,18 +40,32 @@ defmodule Steps do
     do_compact(tail, new_acc)
   end
 
-  defp chain(%{fetch: [fetch], convert: converts, format: [format]}) do
+  defp chain(%{fetch: [url], convert: converts, format: [format]}) do
     %{
-      fetch: fetch,
+      fetch: url,
       shell: join_converts(converts |> Enum.reverse, format),
       format: format
     }
   end
-  defp chain(%{fetch: [fetch], convert: converts}) do
-    chain(%{fetch: [fetch], convert: converts, format: [default_image_format]})
+  defp chain(%{fetch: [url], convert: converts}) do
+    chain(%{fetch: [url], convert: converts, format: [default_image_format]})
   end
-  defp chain(%{fetch: [fetch]}) do
-    %{fetch: fetch}
+  defp chain(%{fetch: [url]}) do
+    %{fetch: url}
+  end
+
+  defp chain(%{file: [path], convert: converts, format: [format]}) do
+    %{
+      file: path,
+      shell: join_converts(converts |> Enum.reverse, format),
+      format: format
+    }
+  end
+  defp chain(%{file: [path], convert: converts}) do
+    chain(%{file: [path], convert: converts, format: [default_image_format]})
+  end
+  defp chain(%{file: [path]}) do
+    %{file: path}
   end
 
   defp join_converts(converts, format) do
