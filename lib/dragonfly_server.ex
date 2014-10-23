@@ -38,7 +38,10 @@ defmodule DragonflyServer do
       worker(HttpAdapter, [])
     ]
 
-    opts = [strategy: :one_for_one, name: DragonflyServer.CacheSupervisor]
+    opts = [strategy: :one_for_one,
+            max_restarts: 10,
+            max_seconds: 1,
+            name: DragonflyServer.CacheSupervisor]
     Supervisor.start_link(children, opts)
   end
 
