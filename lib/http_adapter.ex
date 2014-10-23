@@ -1,6 +1,5 @@
 defmodule HttpAdapter do
   use GenServer
-  @cache_table_name :http_adapter_cache
 
   def fetch(url) do
     GenServer.call(__MODULE__, {:fetch, url})
@@ -20,16 +19,11 @@ defmodule HttpAdapter do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def init(_opts) do
-    :ets.new(@cache_table_name, [:named_table])
-    {:ok, []}
-  end
-
   def handle_call({:fetch, path}, _from, state) do
-    case :ets.lookup(@cache_table_name, path) do
+    case :ets.lookup(table_name, path) do
       [] ->
         data = remote_fetch(path)
-        :ets.insert(@cache_table_name, {path, data})
+        :ets.insert(table_name, {path, data})
         {:reply, data, state}
       [{^path, cached_data}] ->
         {:reply, cached_data, state}
@@ -37,9 +31,11 @@ defmodule HttpAdapter do
   end
 
   def handle_cast({:expire, path}, state) do
-    :ets.delete(@cache_table_name, path)
+    :ets.delete(table_name, path)
     {:noreply, state}
   end
+
+  ## Private
 
   defp remote_fetch(url) do
     %HTTPoison.Response{body: image_binary, status_code: 200} = HTTPoison.get!(url)
@@ -48,5 +44,9 @@ defmodule HttpAdapter do
 
   defp host do
     System.get_env("HTTP_HOST")
+  end
+
+  defp table_name do
+    DragonflyServer.http_adapter_cache_table_name
   end
 end
