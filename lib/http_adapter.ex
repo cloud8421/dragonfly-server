@@ -2,12 +2,16 @@ defmodule HttpAdapter do
   use GenServer
   @cache_table_name :http_adapter_cache
 
-  def fetch(path) do
-    GenServer.call(__MODULE__, {:fetch, path})
+  def fetch(url) do
+    GenServer.call(__MODULE__, {:fetch, url})
   end
 
   def expire(job) do
     GenServer.cast(__MODULE__, {:expire, job.fetch})
+  end
+
+  def url_from_path(path) do
+    host <> "/" <> path
   end
 
   ## Callbacks
@@ -37,10 +41,8 @@ defmodule HttpAdapter do
     {:noreply, state}
   end
 
-  ## Private
-
-  defp remote_fetch(path) do
-    %HTTPoison.Response{body: image_binary, status_code: 200} = HTTPoison.get!(host <> "/" <> path)
+  defp remote_fetch(url) do
+    %HTTPoison.Response{body: image_binary, status_code: 200} = HTTPoison.get!(url)
     image_binary
   end
 

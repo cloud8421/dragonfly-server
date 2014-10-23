@@ -6,7 +6,18 @@ defmodule StepsTest do
              ["p", "convert", "-thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill'", "png"],
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
-    commands = %{fetch: "attachments/20141002T152132-285/Untitled.jpg",
+    commands = %{fetch: "#{System.get_env("HTTP_HOST")}/attachments/20141002T152132-285/Untitled.jpg",
+                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# jpg:-",
+                format: "jpg"}
+    assert(commands == Steps.to_command(steps))
+  end
+
+  test "works with remote urls" do
+    steps = [["fu", "http://img.youtube.com/vi/lFaO7LDqSmk/0.jpg"],
+             ["p", "convert", "-thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill'", "png"],
+             ["p", "thumb", "892x320#"],
+             ["e", "jpg"]]
+    commands = %{fetch: "http://img.youtube.com/vi/lFaO7LDqSmk/0.jpg",
                 shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# jpg:-",
                 format: "jpg"}
     assert(commands == Steps.to_command(steps))

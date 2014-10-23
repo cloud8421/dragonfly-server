@@ -8,7 +8,10 @@ defmodule Steps do
 
   defp do_to_command([], acc), do: acc |> Enum.reverse
   defp do_to_command([["f" | [file]] | tail], acc) do
-    do_to_command(tail, [{:fetch, file} | acc])
+    do_to_command(tail, [{:fetch, adapter.url_from_path(file)} | acc])
+  end
+  defp do_to_command([["fu" | [url]] | tail], acc) do
+    do_to_command(tail, [{:fetch, url} | acc])
   end
   defp do_to_command([["p", "thumb", size] | tail], acc) do
     normalized = ["p", "convert", "-thumbnail #{size}", "jpg"]
@@ -57,5 +60,9 @@ defmodule Steps do
 
   defp convert_command do
     Application.get_env(:processor, :convert_command)
+  end
+
+  defp adapter do
+    HttpAdapter
   end
 end
