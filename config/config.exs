@@ -2,8 +2,6 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :storage, adapter: HttpAdapter
-
 config :web_server, acceptors: 200
 
 config :process_worker_pool, size: 100,

@@ -15,20 +15,25 @@ defmodule Job do
 
   def expire(job) do
     JobCacheStore.delete(job)
-    to_command(job)
-    |> adapter.expire
+    job
+    |> to_command
+    |> do_expire
   end
 
-  defp execute(%{fetch: path, shell: transformation_command, format: format}) do
-    data = adapter.fetch(path)
+  def do_expire(%{fetch: url}) do
+    HttpEngine.expire(url)
+  end
+
+  defp execute(%{fetch: url, shell: transformation_command, format: format}) do
+    data = fetch(url)
            |> transform(transformation_command)
     {format, data}
   end
-  defp execute(%{fetch: path, format: format}) do
-    {format, adapter.fetch(path)}
+  defp execute(%{fetch: url, format: format}) do
+    {format, fetch(url)}
   end
-  defp execute(%{fetch: path}) do
-    {"jpg", adapter.fetch(path)}
+  defp execute(%{fetch: url}) do
+    {"jpg", fetch(url)}
   end
 
   defp transform(image_data, transformation_command) do
@@ -37,7 +42,5 @@ defmodule Job do
     IO.iodata_to_binary(result.out)
   end
 
-  defp adapter do
-    Application.get_env(:storage, :adapter)
-  end
+  defp fetch(url), do: HttpEngine.fetch(url)
 end

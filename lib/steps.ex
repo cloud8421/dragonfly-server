@@ -63,6 +63,6 @@ defmodule Steps do
   end
 
   defp adapter do
-    HttpAdapter
+    HttpEngine
   end
 end

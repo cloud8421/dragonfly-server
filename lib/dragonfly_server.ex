@@ -35,7 +35,7 @@ defmodule DragonflyServer do
 
     children = [
       worker(JobCacheStore, []),
-      worker(HttpAdapter, [])
+      worker(HttpEngine, [])
     ]
 
     opts = [strategy: :one_for_one,

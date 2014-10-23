@@ -1,4 +1,4 @@
-defmodule FsAdapter do
+defmodule FsEngine do
   def fetch(path) do
     {:ok, image_binary} = File.read(base_path <> "/" <> path)
     image_binary

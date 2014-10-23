@@ -1,12 +1,12 @@
-defmodule HttpAdapter do
+defmodule HttpEngine do
   use GenServer
 
   def fetch(url) do
     GenServer.call(__MODULE__, {:fetch, url})
   end
 
-  def expire(job) do
-    GenServer.cast(__MODULE__, {:expire, job.fetch})
+  def expire(url) do
+    GenServer.cast(__MODULE__, {:expire, url})
   end
 
   def url_from_path(path) do
@@ -19,19 +19,19 @@ defmodule HttpAdapter do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def handle_call({:fetch, path}, _from, state) do
-    case :ets.lookup(table_name, path) do
+  def handle_call({:fetch, url}, _from, state) do
+    case :ets.lookup(table_name, url) do
       [] ->
-        data = remote_fetch(path)
-        :ets.insert(table_name, {path, data})
+        data = remote_fetch(url)
+        :ets.insert(table_name, {url, data})
         {:reply, data, state}
-      [{^path, cached_data}] ->
+      [{^url, cached_data}] ->
         {:reply, cached_data, state}
     end
   end
 
-  def handle_cast({:expire, path}, state) do
-    :ets.delete(table_name, path)
+  def handle_cast({:expire, url}, state) do
+    :ets.delete(table_name, url)
     {:noreply, state}
   end
 
