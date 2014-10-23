@@ -9,7 +9,7 @@ defmodule Job do
 
   def to_command(job) do
     job
-    |> PayloadDecoder.decode
+    |> Payload.decode
     |> Steps.to_command
   end
 
