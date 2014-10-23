@@ -1,4 +1,5 @@
 defmodule Steps do
+  import Job, only: [default_image_format: 0]
 
   def to_command(steps) do
     do_to_command(steps, [])
@@ -14,7 +15,7 @@ defmodule Steps do
     do_to_command(tail, [{:fetch, url} | acc])
   end
   defp do_to_command([["p", "thumb", size] | tail], acc) do
-    normalized = ["p", "convert", "-thumbnail #{size}", "jpg"]
+    normalized = ["p", "convert", "-thumbnail #{size}", default_image_format]
     do_to_command([normalized | tail], acc)
   end
   defp do_to_command([["p", "convert", instructions, format] | tail], acc) do
@@ -44,7 +45,7 @@ defmodule Steps do
     }
   end
   defp chain(%{fetch: [fetch], convert: converts}) do
-    chain(%{fetch: [fetch], convert: converts, format: ["jpg"]})
+    chain(%{fetch: [fetch], convert: converts, format: [default_image_format]})
   end
   defp chain(%{fetch: [fetch]}) do
     %{fetch: fetch}

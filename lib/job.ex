@@ -24,6 +24,8 @@ defmodule Job do
     HttpEngine.expire(url)
   end
 
+  def default_image_format, do: "jpg"
+
   defp execute(%{fetch: url, shell: transformation_command, format: format}) do
     data = fetch(url)
            |> transform(transformation_command)
@@ -33,7 +35,7 @@ defmodule Job do
     {format, fetch(url)}
   end
   defp execute(%{fetch: url}) do
-    {"jpg", fetch(url)}
+    {default_image_format, fetch(url)}
   end
 
   defp transform(image_data, transformation_command) do
