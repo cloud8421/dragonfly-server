@@ -9,6 +9,7 @@ defmodule WebRouter do
   plug Plug.Head
   plug :match
   plug :dispatch
+  plug Plug.Cache
 
   delete "/admin/media/:payload" do
     :ok = expire_image(payload)
@@ -21,11 +22,11 @@ defmodule WebRouter do
       match -> match
     end
     conn_with_headers = add_headers(conn, format, filename)
-    send_resp(conn_with_headers, 200, response)
+    resp(conn_with_headers, 200, response)
   end
 
   match _ do
-    send_resp(conn, 404, "Image not found")
+    resp(conn, 404, "Image not found")
   end
 
   defp compute_image(payload) do
