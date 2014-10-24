@@ -27,8 +27,9 @@ defmodule Plug.Cache do
   end
 
   defp response_for_etag(etag, etag, conn) do
-    conn_with_304 = resp(conn, 304, "")
-    put_resp_header(conn_with_304, "ETag", etag)
+    conn
+    |> put_resp_header("Etag", etag)
+    |> resp(304, "")
   end
   defp response_for_etag(_etag, new_etag, conn) do
     put_resp_header(conn, "ETag", new_etag)

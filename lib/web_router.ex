@@ -21,8 +21,9 @@ defmodule WebRouter do
       nil -> compute_image(payload)
       match -> match
     end
-    conn_with_headers = add_headers(conn, format, filename)
-    resp(conn_with_headers, 200, response)
+    conn
+    |> add_headers(format, filename)
+    |> resp(200, response)
   end
 
   match _ do
@@ -42,9 +43,10 @@ defmodule WebRouter do
   end
 
   defp add_headers(conn, format, filename) do
-    with_ct = put_resp_header(conn, "Content-Type", header_for_format(format))
-    with_expiries = put_resp_header(with_ct, "cache-control", "public, max-age=#{@max_age}")
-    put_resp_header(with_expiries, "Content-Disposition", "filename=\"#{filename}\"")
+    conn
+    |> put_resp_header("Content-Type", header_for_format(format))
+    |> put_resp_header("cache-control", "public, max-age=#{@max_age}")
+    |> put_resp_header("Content-Disposition", "filename=\"#{filename}\"")
   end
 
   defp header_for_format("jpg"), do: "image/jpg"
