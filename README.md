@@ -16,13 +16,13 @@ Please use Erlang 17.1, available at <https://www.erlang-solutions.com/downloads
 
 #### Elixir
 
-To install elixir on a Mac, just `brew install elixir` (you may need to `brew update` first to retrieve 1.0.1).
+To install elixir on a Mac, `brew install elixir` (you may need to `brew update` first to retrieve 1.0.1).
 
 Alternatively, you can follow [these instructions](http://elixir-lang.org/install.html).
 
 #### Imagemagick
 
-To install Imagemagick with png support, just "brew install jpeg libpng imagemagick".
+To install Imagemagick with png support, run `brew install jpeg libpng imagemagick`.
 
 #### Goon
 
