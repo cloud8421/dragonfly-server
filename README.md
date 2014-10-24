@@ -4,6 +4,12 @@
 
 This application can be used to serve Dragonfly urls.
 
+# Limitations
+
+- Caching is done in memory and (for now) it has no cap, so if you run this, you will eventually run out of memory.
+- Doesn't support the full Dragonfly feature set (for now).
+- Limited to Imagemagick.
+
 # Setup
 
 ## Dependencies
