@@ -14,6 +14,13 @@ defmodule DragonflyServer.Mixfile do
   end
 
   defp deps do
+    deps(Mix.env)
+  end
+
+  defp deps(:test), do: [{:meck, "~> 0.8.2"} | deps_list]
+  defp deps(_), do: deps_list
+
+  defp deps_list do
     [
       {:poolboy, "~> 1.3.0"},
       {:dotenv, "~> 0.0.3"},
