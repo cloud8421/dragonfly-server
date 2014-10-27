@@ -7,7 +7,7 @@ before_install:
 before_script:
   - export PATH=`pwd`/elixir/bin:$PATH
   - mix local.hex --force
-  - mix deps.get
+  - MIX_ENV=test mix deps.get
 env:
   - PORT=4000 HTTP_HOST=http://example.com
 script:
