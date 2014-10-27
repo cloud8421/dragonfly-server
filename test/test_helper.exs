@@ -11,3 +11,7 @@ defmodule Fixtures do
     data
   end
 end
+
+defmodule TestConfig do
+  def convert_command, do: Application.get_env(:processor, :convert_command)
+end
