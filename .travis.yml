@@ -11,4 +11,4 @@ before_script:
 env:
   - PORT=4000 HTTP_HOST=http://example.com
 script:
-  - MIX_ENV=test mix test
+  - CONVERT_COMMAND=convert MIX_ENV=test mix test
