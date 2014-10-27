@@ -17,7 +17,7 @@ defmodule DragonflyServer.Mixfile do
     deps(Mix.env)
   end
 
-  defp deps(:test), do: [{:meck, "~> 0.8.2"} | deps_list]
+  defp deps(:test), do: [{:mock, "~> 0.0.4", github: "jjh42/mock"} | deps_list]
   defp deps(_), do: deps_list
 
   defp deps_list do
