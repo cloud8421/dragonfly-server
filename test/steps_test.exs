@@ -7,7 +7,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %{fetch: "#{System.get_env("HTTP_HOST")}/attachments/20141002T152132-285/Untitled.jpg",
-                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# jpg:-",
+                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.to_command(steps))
   end
@@ -18,7 +18,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %{fetch: "http://img.youtube.com/vi/lFaO7LDqSmk/0.jpg",
-                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# jpg:-",
+                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.to_command(steps))
   end
@@ -29,7 +29,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %{file: "/app/foo.jpg",
-                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# jpg:-",
+                shell: "/usr/local/bin/convert - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | /usr/local/bin/convert - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.to_command(steps))
   end

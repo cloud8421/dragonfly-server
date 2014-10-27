@@ -72,7 +72,7 @@ defmodule Steps do
     [
       "#{convert_command} - ",
       Enum.join(converts, " #{format}:- | #{convert_command} - "),
-      " #{format}:-"
+      " -strip #{format}:-"
     ] |> Enum.join("")
   end
 
