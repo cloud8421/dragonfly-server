@@ -25,30 +25,19 @@ defmodule Job do
   end
   def do_expire(_), do: nil
 
-  def default_image_format, do: "jpg"
-
-  defp execute(%{fetch: url, shell: transformation_command, format: format}) do
-    data = fetch(url)
-           |> transform(transformation_command)
-    {format, data}
+  defp execute(steps = %Steps{convert: []}) do
+    {steps.format, get_base_image(steps)}
   end
-  defp execute(%{fetch: url, format: format}) do
-    {format, fetch(url)}
-  end
-  defp execute(%{fetch: url}) do
-    {default_image_format, fetch(url)}
+  defp execute(steps) do
+    base_image = get_base_image(steps)
+    {steps.format, base_image |> transform(steps.convert)}
   end
 
-  defp execute(%{file: path, shell: transformation_command, format: format}) do
-    data = file(path)
-           |> transform(transformation_command)
-    {format, data}
+  defp get_base_image(%Steps{fetch: url}) when is_binary(url) do
+    fetch(url)
   end
-  defp execute(%{file: path, format: format}) do
-    {format, file(path)}
-  end
-  defp execute(%{file: path}) do
-    {default_image_format, file(path)}
+  defp get_base_image(%Steps{file: path}) when is_binary(path) do
+    file(path)
   end
 
   defp transform(image_data, transformation_command) do
