@@ -45,11 +45,13 @@ defmodule Steps do
 
   defp join_converts([], _format), do: []
   defp join_converts(converts, format) do
-    [
-      "#{convert_command} - ",
-      Enum.join(converts, " #{format}:- | #{convert_command} - "),
-      " -strip #{format}:-"
-    ] |> Enum.join("")
+    # The `-` after the first convert command tells ImageMagick to use stdin
+    # The `-strip` flag removes exif data from the images
+    # The `jpeg:-` notation tells ImageMagick to pipe the output to stdout in the
+    # specified format
+
+    joined_converts = Enum.join(converts, " #{format}:- | #{convert_command} - ")
+    "#{convert_command} - #{joined_converts} -strip #{format}:-"
   end
 
   defp convert_command do
