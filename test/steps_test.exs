@@ -9,7 +9,7 @@ defmodule StepsTest do
     commands = %{fetch: "#{System.get_env("HTTP_HOST")}/attachments/20141002T152132-285/Untitled.jpg",
                 shell: "#{TestConfig.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{TestConfig.convert_command} - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
-    assert(commands == Steps.to_command(steps))
+    assert(commands == Steps.deserialize(steps))
   end
 
   test "works with remote urls" do
@@ -20,7 +20,7 @@ defmodule StepsTest do
     commands = %{fetch: "http://img.youtube.com/vi/lFaO7LDqSmk/0.jpg",
                 shell: "#{TestConfig.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{TestConfig.convert_command} - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
-    assert(commands == Steps.to_command(steps))
+    assert(commands == Steps.deserialize(steps))
   end
 
   test "works with local files" do
@@ -31,6 +31,6 @@ defmodule StepsTest do
     commands = %{file: "/app/foo.jpg",
                 shell: "#{TestConfig.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{TestConfig.convert_command} - -thumbnail 892x320# -strip jpg:-",
                 format: "jpg"}
-    assert(commands == Steps.to_command(steps))
+    assert(commands == Steps.deserialize(steps))
   end
 end

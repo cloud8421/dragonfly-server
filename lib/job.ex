@@ -1,22 +1,22 @@
 defmodule Job do
   def process(job) do
     {format, data} = job
-                      |> to_command
+                      |> deserialize
                       |> execute
     JobCacheStore.set(job, format, data)
     {format, data}
   end
 
-  def to_command(job) do
+  def deserialize(job) do
     job
     |> Payload.decode
-    |> Steps.to_command
+    |> Steps.deserialize
   end
 
   def expire(job) do
     JobCacheStore.delete(job)
     job
-    |> to_command
+    |> deserialize
     |> do_expire
   end
 
