@@ -6,6 +6,9 @@ before_install:
   - unzip -d elixir Precompiled.zip
   - wget https://github.com/alco/goon/releases/download/v1.1.0/goon_linux_amd64.tar.gz
   - tar -xf goon_linux_amd64.tar.gz
+  - sudo add-apt-repository -y ppa:moti-p/cc
+  - sudo apt-get update
+  - sudo apt-get -y --reinstall install imagemagick
 before_script:
   - export PATH=`pwd`/elixir/bin:$PATH
   - mix local.hex --force
