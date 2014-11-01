@@ -8,8 +8,8 @@ defmodule Steps do
             convert: [],
             format: @default_image_format
 
-  def deserialize(steps) do
-    do_deserialize(steps, %Steps{})
+  def deserialize(decoded_payload) do
+    do_deserialize(decoded_payload, %Steps{})
     |> compact
   end
 
