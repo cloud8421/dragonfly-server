@@ -1,6 +1,11 @@
 # extracted from https://github.com/inkr/cryptic/blob/master/lib/cryptic/hash.ex
 
 defmodule Crypt do
+  def hmac256(term, key) do
+    bitstring = :crypto.hmac(:sha256, key, term, 16)
+    bitstring_to_hexstring(bitstring)
+  end
+
   def sha256(term) do
     bitstring = :crypto.hash(:sha256, term)
     bitstring_to_hexstring(bitstring)

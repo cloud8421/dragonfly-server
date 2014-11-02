@@ -45,4 +45,24 @@ defmodule WebServerTest do
           |> WebServer.call(@opts)
     assert req.status == 202
   end
+
+  test "it supports urls with sha" do
+    Application.put_env(:security, :secret, "test-key")
+    payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQxMDIwVDA4NTY1Ny03ODMxL1NhaW5zYnVyeSdzIFNwb29reSBTcGVha2VyIC0gaW1hZ2UgMS5qcGciXV0"
+    hashed_job = Job.hash_from_payload(payload)
+    url = @valid_url <> "?sha=" <> hashed_job
+    invalid_url = @valid_url <> "?sha=foo"
+
+    with_mock HttpEngine, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
+      req = conn(:get, url)
+            |> WebServer.call(@opts)
+      assert req.status == 200
+
+      req2 = conn(:get, invalid_url)
+            |> WebServer.call(@opts)
+      assert req2.status == 401
+      assert nil == List.keyfind(req2.resp_headers, "ETag", 0)
+    end
+
+  end
 end
