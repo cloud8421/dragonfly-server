@@ -41,9 +41,13 @@ defmodule WebRouter do
   end
 
   defp verify_payload(conn, payload) do
-    case conn.params do
-      %{"sha" => sha} -> is_genuine_job(sha, payload)
-      _ -> true
+    if needs_to_verify_urls do
+      case conn.params do
+        %{"sha" => sha} -> is_genuine_job(sha, payload)
+        _ -> false
+      end
+    else
+      true
     end
   end
 
@@ -72,4 +76,9 @@ defmodule WebRouter do
 
   defp header_for_format("jpg"), do: "image/jpg"
   defp header_for_format("png"), do: "image/png"
+
+  defp needs_to_verify_urls do
+    Application.get_env(:security, :verify_urls)
+    && Application.get_env(:security, :secret)
+  end
 end

@@ -9,6 +9,11 @@ defmodule WebServerTest do
   @admin_valid_url "admin/media/W1siZiIsImF0dGFjaG1lbnRzLzIwMTQxMDIwVDA4NTY1Ny03ODMxL1NhaW5zYnVyeSdzIFNwb29reSBTcGVha2VyIC0gaW1hZ2UgMS5qcGciXV0"
   @valid_etag "73f6e4aace13c086c25a4c0a674e0ee1195945b8fd0416cee239b88ad8ea9f42"
 
+  setup do
+    Application.put_env(:security, :verify_urls, false)
+    :ok
+  end
+
   test "it sends 404 when none matches" do
     req = conn(:get, "/foo")
           |> WebServer.call(@opts)
@@ -47,6 +52,7 @@ defmodule WebServerTest do
   end
 
   test "it supports urls with sha" do
+    Application.put_env(:security, :verify_urls, true)
     Application.put_env(:security, :secret, "test-key")
     payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQxMDIwVDA4NTY1Ny03ODMxL1NhaW5zYnVyeSdzIFNwb29reSBTcGVha2VyIC0gaW1hZ2UgMS5qcGciXV0"
     hashed_job = Job.hash_from_payload(payload)

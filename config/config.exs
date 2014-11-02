@@ -9,6 +9,9 @@ config :process_worker_pool,
   size: 100,
   max_overflow: 20
 
+config :security,
+  verify_urls: false
+
 config :processor,
   convert_command: "/usr/local/bin/convert",
   http_timeout: 10000
