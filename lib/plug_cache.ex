@@ -10,12 +10,14 @@ defmodule Plug.Cache do
     process(conn)
   end
 
-  defp process(conn = %Plug.Conn{method: method}) when method == "GET" do
+  defp process(conn = %Plug.Conn{method: "GET", status: 200}) do
     get_req_header(conn, "if-none-match")
     |> build_response(conn)
     |> send_resp
   end
-  defp process(conn), do: conn
+  defp process(conn) do
+    conn |> send_resp
+  end
 
   defp build_response([], conn) do
     new_etag = Crypt.sha256(conn.resp_body)

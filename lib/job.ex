@@ -20,6 +20,13 @@ defmodule Job do
     |> do_expire
   end
 
+  def hash_from_payload(job) do
+    job
+    |> Payload.decode
+    |> Crypt.hmac256(Application.get_env(:security, :secret))
+    |> String.slice(0, 16)
+  end
+
   def do_expire(%{fetch: url}) do
     HttpEngine.expire(url)
   end

@@ -13,21 +13,46 @@ defmodule WebRouter do
 
   delete "/admin/media/:payload" do
     :ok = expire_image(payload)
-    send_resp(conn, 202, "Scheduled deletion")
+    resp(conn, 202, "Scheduled deletion")
   end
 
   get "/media/:payload/:filename" do
-    {format, response} = case JobCacheStore.get(payload) do
-      nil -> compute_image(payload)
-      match -> match
-    end
     conn
-    |> add_headers(format, filename)
-    |> resp(200, response)
+    |> fetch_params
+    |> handle_image_response(payload, filename)
   end
 
   match _ do
     resp(conn, 404, "Image not found")
+  end
+
+  defp handle_image_response(conn, payload, filename) do
+    if verify_payload(conn, payload) do
+      {format, response} = case JobCacheStore.get(payload) do
+        nil -> compute_image(payload)
+        match -> match
+      end
+      conn
+      |> add_headers(format, filename)
+      |> resp(200, response)
+    else
+      resp(conn, 401, "Not a valid sha")
+    end
+  end
+
+  defp verify_payload(conn, payload) do
+    if needs_to_verify_urls do
+      case conn.params do
+        %{"sha" => sha} -> is_genuine_job(sha, payload)
+        _ -> false
+      end
+    else
+      true
+    end
+  end
+
+  defp is_genuine_job(sha, payload) do
+    sha == Job.hash_from_payload(payload)
   end
 
   defp compute_image(payload) do
@@ -51,4 +76,9 @@ defmodule WebRouter do
 
   defp header_for_format("jpg"), do: "image/jpg"
   defp header_for_format("png"), do: "image/png"
+
+  defp needs_to_verify_urls do
+    Application.get_env(:security, :verify_urls)
+    && Application.get_env(:security, :secret)
+  end
 end
