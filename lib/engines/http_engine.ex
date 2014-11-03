@@ -1,8 +1,9 @@
 defmodule HttpEngine do
   use GenServer
+  alias DragonflyServer.Config
 
   def fetch(url) do
-    GenServer.call(__MODULE__, {:fetch, url})
+    GenServer.call(__MODULE__, {:fetch, url}, Config.http_fetch_timeout)
   end
 
   def expire(url) do

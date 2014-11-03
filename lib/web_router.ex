@@ -1,6 +1,7 @@
 defmodule WebRouter do
   import Plug.Conn
   use Plug.Router
+  alias DragonflyServer.Config
 
   @max_age 31536000 # 1 year
 
@@ -78,7 +79,6 @@ defmodule WebRouter do
   defp header_for_format("png"), do: "image/png"
 
   defp needs_to_verify_urls do
-    Application.get_env(:security, :verify_urls)
-    && Application.get_env(:security, :secret)
+    Config.verify_urls && Config.secret
   end
 end

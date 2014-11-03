@@ -1,4 +1,6 @@
 defmodule Job do
+  alias DragonflyServer.Config
+
   def process(job) do
     {format, data} = job
                       |> deserialize
@@ -23,7 +25,7 @@ defmodule Job do
   def hash_from_payload(job) do
     job
     |> Payload.decode
-    |> Crypt.hmac256(Application.get_env(:security, :secret))
+    |> Crypt.hmac256(Config.secret)
     |> String.slice(0, 16)
   end
 

@@ -1,5 +1,6 @@
 defmodule Steps do
   import Job.Sanitize
+  import DragonflyServer.Config, only: [convert_command: 0]
 
   @default_image_format "jpg"
 
@@ -52,9 +53,5 @@ defmodule Steps do
 
     joined_converts = Enum.join(converts, " #{format}:- | #{convert_command} - ")
     "#{convert_command} - #{joined_converts} -strip #{format}:-"
-  end
-
-  defp convert_command do
-    Application.get_env(:processor, :convert_command)
   end
 end

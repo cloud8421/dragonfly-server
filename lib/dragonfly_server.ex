@@ -1,12 +1,13 @@
 defmodule DragonflyServer do
   use Application
+  alias DragonflyServer.Config
 
   def job_cache_table_name, do: :job_cache
   def http_engine_cache_table_name, do: :http_engine_cache
 
   def start(_type, _args) do
-    Plug.Adapters.Cowboy.http WebServer, [], port: System.get_env("PORT") |> String.to_integer,
-                                             acceptors: Application.get_env(:web_server, :acceptors),
+    Plug.Adapters.Cowboy.http WebServer, [], port: Config.http_port,
+                                             acceptors: Config.http_acceptors,
                                              compress: true
     start_workers
     start_caches
@@ -18,8 +19,8 @@ defmodule DragonflyServer do
     worker_pool_options = [
       name: {:local, :dragonfly_worker_pool},
       worker_module: JobWorker,
-      size: Application.get_env(:process_worker_pool, :size),
-      max_overflow: Application.get_env(:process_worker_pool, :max_overflow)
+      size: Config.worker_pool_size,
+      max_overflow: Config.worker_pool_max_overflow
     ]
 
     children = [
