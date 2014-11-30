@@ -1,6 +1,7 @@
 defmodule WebRouter do
   import Plug.Conn
   use Plug.Router
+  use Jazz
   alias DragonflyServer.Config
 
   @max_age 31536000 # 1 year
@@ -15,6 +16,18 @@ defmodule WebRouter do
   delete "/admin/media/:payload" do
     :ok = expire_image(payload)
     resp(conn, 202, "Scheduled deletion")
+  end
+
+  get "/admin/media/:payload" do
+    if verify_payload(conn, payload) do
+      data = examine_image(payload)
+             |> Steps.to_json
+      conn
+      |> put_resp_content_type("application/json")
+      |> resp(200, data)
+    else
+      resp(conn, 404, "Image not found")
+    end
   end
 
   get "/media/:payload/:filename" do
@@ -59,6 +72,12 @@ defmodule WebRouter do
   defp compute_image(payload) do
     :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
       JobWorker.process(worker, payload)
+    end)
+  end
+
+  def examine_image(payload) do
+    :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
+      JobWorker.examine(worker, payload)
     end)
   end
 

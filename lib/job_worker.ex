@@ -8,6 +8,10 @@ defmodule JobWorker do
     GenServer.call(worker, {:process, job}, Config.job_worker_timeout)
   end
 
+  def examine(worker, job) do
+    GenServer.call(worker, {:examine, job}, Config.job_worker_timeout)
+  end
+
   def expire(worker, job) do
     GenServer.call(worker, {:expire, job})
   end
@@ -24,6 +28,11 @@ defmodule JobWorker do
 
   def handle_call({:process, job}, _from, state) do
     data = Job.process(job)
+    {:reply, data, state}
+  end
+
+  def handle_call({:examine, job}, _from, state) do
+    data = Job.deserialize(job)
     {:reply, data, state}
   end
 

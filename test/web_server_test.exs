@@ -45,12 +45,6 @@ defmodule WebServerTest do
     end
   end
 
-  test "it exposes an admin api" do
-    req = conn(:delete, @admin_valid_url)
-          |> WebServer.call(@opts)
-    assert req.status == 202
-  end
-
   test "it supports urls with sha" do
     Application.put_env(:security, :verify_urls, true)
     Application.put_env(:security, :secret, "test-key")
@@ -69,6 +63,19 @@ defmodule WebServerTest do
       assert req2.status == 401
       assert nil == List.keyfind(req2.resp_headers, "ETag", 0)
     end
+  end
 
+  test "admin DELETE image" do
+    req = conn(:delete, @admin_valid_url)
+          |> WebServer.call(@opts)
+    assert req.status == 202
+  end
+
+  test "admin GET image" do
+    expected_body = "{\"convert\":[],\"fetch\":\"http://contagious-assets.s3.amazonaws.com/attachments/20141020T085657-7831/Sainsbury's Spooky Speaker - image 1.jpg\",\"file\":null,\"format\":\"jpg\"}"
+    req = conn(:get, @admin_valid_url)
+          |> WebServer.call(@opts)
+    assert req.status == 200
+    assert req.resp_body == expected_body
   end
 end

@@ -1,6 +1,7 @@
 defmodule Steps do
   import Job.Sanitize
   import DragonflyServer.Config, only: [convert_command: 0]
+  use Jazz
 
   @default_image_format "jpg"
 
@@ -8,6 +9,10 @@ defmodule Steps do
             file: nil,
             convert: [],
             format: @default_image_format
+
+  def to_json(steps_struct) do
+    JSON.encode! steps_struct
+  end
 
   def deserialize(decoded_payload) do
     do_deserialize(decoded_payload, %Steps{})

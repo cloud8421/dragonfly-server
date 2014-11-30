@@ -60,6 +60,10 @@ Starts the app and opens a console.
 ## Admin api
 
 The app exposes an admin api that can be used to programmatically expire an image and all its associated resources.
+Endpoints are:
+
+- GET image (shows steps necessary to generate image)
+- DELETE image (expires all caches involved in the generation of the image)
 
 Given an image url in the form of:
 
@@ -74,6 +78,14 @@ From the command line:
     $ curl -XDELETE http://example.com/admin/media/12345
 
 The expected response is a `202`, which indicates that the cache expiry has been scheduled and will be performed asyncronously.
+
+The steps necessary to generate the image can also be examined at:
+
+    http://example.com/admin/media/12345
+
+From the command line:
+
+    $ curl http://example.com/admin/media/12345
 
 ## Deploy on Heroku
 
