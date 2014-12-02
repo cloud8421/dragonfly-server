@@ -13,6 +13,10 @@ defmodule WebRouter do
   plug :dispatch
   plug Plug.Cache
 
+  if Mix.env == :dev do
+    use Plug.Debugger, otp_app: :dragonfly_server
+  end
+
   delete "/admin/media/:payload" do
     :ok = expire_image(payload)
     resp(conn, 202, "Scheduled deletion")
