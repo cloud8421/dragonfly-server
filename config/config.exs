@@ -3,7 +3,7 @@
 use Mix.Config
 
 config :logger, :console,
-  level: :error
+  level: :info, metadata: [:request_id]
 
 config :processor,
   job_worker_timeout: 15000,
