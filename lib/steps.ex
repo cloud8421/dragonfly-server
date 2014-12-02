@@ -1,5 +1,5 @@
 defmodule Steps do
-  import Job.Sanitize
+  import Steps.Sanitize
   import DragonflyServer.Config, only: [convert_command: 0]
   use Jazz
 

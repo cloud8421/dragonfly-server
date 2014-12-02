@@ -1,4 +1,4 @@
-defmodule Job.Sanitize do
+defmodule Steps.Sanitize do
   # Poor man's sanitize to avoid malicious formats:
   # anything that doesn't match will
   # cause a pattern match error, eventually crashing the worker that
