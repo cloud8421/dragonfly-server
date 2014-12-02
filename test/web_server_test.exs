@@ -72,7 +72,8 @@ defmodule WebServerTest do
   end
 
   test "admin GET image" do
-    expected_body = "{\"convert\":[],\"fetch\":\"http://contagious-assets.s3.amazonaws.com/attachments/20141020T085657-7831/Sainsbury's Spooky Speaker - image 1.jpg\",\"file\":null,\"format\":\"jpg\"}"
+    host = System.get_env("HTTP_HOST")
+    expected_body = "{\"convert\":[],\"fetch\":\"#{host}/attachments/20141020T085657-7831/Sainsbury's Spooky Speaker - image 1.jpg\",\"file\":null,\"format\":\"jpg\"}"
     req = conn(:get, @admin_valid_url)
           |> WebServer.call(@opts)
     assert req.status == 200
