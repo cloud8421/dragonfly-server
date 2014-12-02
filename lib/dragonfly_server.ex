@@ -38,7 +38,7 @@ defmodule DragonflyServer do
     :ets.new(http_engine_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
 
     children = [
-      worker(JobCacheStore, []),
+      worker(Job.Cache.MemoryStore, []),
       worker(HttpEngine, [])
     ]
 

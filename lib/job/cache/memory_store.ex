@@ -1,4 +1,4 @@
-defmodule JobCacheStore do
+defmodule Job.Cache.MemoryStore do
   use GenServer
 
   def delete(cache_key) do

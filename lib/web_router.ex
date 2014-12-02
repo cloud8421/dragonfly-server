@@ -46,7 +46,7 @@ defmodule WebRouter do
 
   defp handle_image_response(conn, payload, filename) do
     if verify_payload(conn, payload) do
-      {format, response} = case JobCacheStore.get(payload) do
+      {format, response} = case Job.Cache.MemoryStore.get(payload) do
         nil -> compute_image(payload)
         match -> match
       end

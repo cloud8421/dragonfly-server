@@ -5,7 +5,7 @@ defmodule Job do
     {format, data} = job
                       |> deserialize
                       |> execute
-    JobCacheStore.set(job, format, data)
+    Job.Cache.MemoryStore.set(job, format, data)
     {format, data}
   end
 
@@ -16,7 +16,7 @@ defmodule Job do
   end
 
   def expire(job) do
-    JobCacheStore.delete(job)
+    Job.Cache.MemoryStore.delete(job)
     job
     |> deserialize
     |> do_expire
