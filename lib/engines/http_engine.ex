@@ -48,6 +48,6 @@ defmodule HttpEngine do
   end
 
   defp table_name do
-    DragonflyServer.http_engine_cache_table_name
+    Engines.HttpSup.http_engine_cache_table_name
   end
 end
