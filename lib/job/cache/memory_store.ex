@@ -35,6 +35,6 @@ defmodule Job.Cache.MemoryStore do
   ## Private
 
   defp table_name do
-    DragonflyServer.job_cache_table_name
+    Job.Cache.MemorySup.job_cache_table_name
   end
 end
