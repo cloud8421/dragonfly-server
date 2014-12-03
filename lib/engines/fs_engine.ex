@@ -1,4 +1,4 @@
-defmodule FsEngine do
+defmodule Engines.Fs do
   alias DragonflyServer.Config
 
   def fetch(path) do

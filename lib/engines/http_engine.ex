@@ -1,4 +1,4 @@
-defmodule HttpEngine do
+defmodule Engines.Http do
   use GenServer
   alias DragonflyServer.Config
 

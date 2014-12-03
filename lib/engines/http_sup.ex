@@ -5,7 +5,7 @@ defmodule Engines.HttpSup do
     :ets.new(http_engine_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
 
     children = [
-      worker(HttpEngine, [])
+      worker(Engines.Http, [])
     ]
 
     opts = [strategy: :one_for_one,

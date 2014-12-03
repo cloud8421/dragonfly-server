@@ -28,7 +28,7 @@ defmodule JobTest do
 
   test "it creates the correct image" do
     payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQwMTIzVDE3NTc0NS0yODIzL1VudGl0bGVkLnBuZyJdLFsicCIsImNvbnZlcnQiLCItdGh1bWJuYWlsIDI3M3gyNzNeXiAtZ3Jhdml0eSBjZW50ZXIgLWNyb3AgMjczeDI3MyswKzAgK3JlcGFnZSAtZHJhdyAncG9seWdvbiAwLDAgMjczLDI3MyAyNzMsMCBmaWxsIG5vbmUgbWF0dGUgMTM1LDEzNSBmbG9vZGZpbGwnIiwicG5nIl1d"
-    with_mock HttpEngine, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
+    with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
       {"png", data} = Job.process(payload)
       assert data == Fixtures.sample_transformed_image
     end

@@ -22,7 +22,7 @@ defmodule WebServerTest do
   end
 
   test "it sends a well formed successful response" do
-    with_mock HttpEngine, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
+    with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
       req = conn(:get, @valid_url)
             |> WebServer.call(@opts)
       {"ETag", etag} = List.keyfind(req.resp_headers, "ETag", 0)
@@ -38,7 +38,7 @@ defmodule WebServerTest do
   end
 
   test "it correctly supports etags" do
-    with_mock HttpEngine, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
+    with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
       req = conn(:get, @valid_url, nil, [{:headers, [{"if-none-match", @valid_etag}]}])
             |> WebServer.call(@opts)
       assert req.status == 304
@@ -53,7 +53,7 @@ defmodule WebServerTest do
     url = @valid_url <> "?sha=" <> hashed_job
     invalid_url = @valid_url <> "?sha=foo"
 
-    with_mock HttpEngine, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
+    with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> Fixtures.sample_image end] do
       req = conn(:get, url)
             |> WebServer.call(@opts)
       assert req.status == 200

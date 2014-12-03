@@ -30,7 +30,7 @@ defmodule Job do
   end
 
   def do_expire(%{fetch: url}) do
-    HttpEngine.expire(url)
+    Engines.Http.expire(url)
   end
   def do_expire(_), do: nil
 
@@ -55,6 +55,6 @@ defmodule Job do
     IO.iodata_to_binary(result.out)
   end
 
-  defp fetch(url), do: HttpEngine.fetch(url)
-  defp file(path), do: FsEngine.fetch(path)
+  defp fetch(url), do: Engines.Http.fetch(url)
+  defp file(path), do: Engines.Fs.fetch(path)
 end

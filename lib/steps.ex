@@ -21,7 +21,7 @@ defmodule Steps do
 
   defp do_deserialize([], acc), do: acc
   defp do_deserialize([["f" | [file]] | tail], acc) do
-    do_deserialize(tail, %Steps{acc | fetch: HttpEngine.url_from_path(file)})
+    do_deserialize(tail, %Steps{acc | fetch: Engines.Http.url_from_path(file)})
   end
   defp do_deserialize([["fu" | [url]] | tail], acc) do
     do_deserialize(tail, %Steps{acc | fetch: url})
