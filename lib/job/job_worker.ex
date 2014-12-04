@@ -1,4 +1,4 @@
-defmodule JobWorker do
+defmodule Job.Worker do
   use GenServer
   alias DragonflyServer.Config
 

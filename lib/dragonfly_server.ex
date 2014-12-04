@@ -10,7 +10,7 @@ defmodule DragonflyServer do
 
     children = [
       supervisor(cache_sup(Config.cache_store), []),
-      supervisor(JobSup, []),
+      supervisor(Job.Sup, []),
       supervisor(Engines.HttpSup, [])
     ]
 

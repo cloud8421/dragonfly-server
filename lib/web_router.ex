@@ -75,19 +75,19 @@ defmodule WebRouter do
 
   defp compute_image(payload) do
     :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
-      JobWorker.process(worker, payload)
+      Job.Worker.process(worker, payload)
     end)
   end
 
   def examine_image(payload) do
     :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
-      JobWorker.examine(worker, payload)
+      Job.Worker.examine(worker, payload)
     end)
   end
 
   def expire_image(payload) do
     :poolboy.transaction(:dragonfly_worker_pool, fn(worker) ->
-      JobWorker.expire(worker, payload)
+      Job.Worker.expire(worker, payload)
     end)
   end
 

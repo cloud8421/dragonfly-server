@@ -1,4 +1,4 @@
-defmodule JobSup do
+defmodule Job.Sup do
   use Supervisor
   alias DragonflyServer.Config
 
@@ -9,7 +9,7 @@ defmodule JobSup do
   def init([]) do
     worker_pool_options = [
       name: {:local, :dragonfly_worker_pool},
-      worker_module: JobWorker,
+      worker_module: Job.Worker,
       size: Config.worker_pool_size,
       max_overflow: Config.worker_pool_max_overflow
     ]
