@@ -20,6 +20,10 @@ defmodule Config do
     Application.get_env(:security, :secret)
   end
 
+  def http_engine_host do
+    System.get_env("HTTP_ENGINE_HOST")
+  end
+
   def fs_base_path do
     Application.get_env(:storage, :base_path) || System.cwd
   end

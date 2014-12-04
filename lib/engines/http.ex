@@ -1,5 +1,6 @@
 defmodule Engines.Http do
   use GenServer
+  import Config, only: [http_engine_host: 0]
 
   def fetch(url) do
     GenServer.call(__MODULE__, {:fetch, url}, Config.http_fetch_timeout)
@@ -10,7 +11,7 @@ defmodule Engines.Http do
   end
 
   def url_from_path(path) do
-    host <> "/" <> path
+    http_engine_host <> "/" <> path
   end
 
   ## Callbacks
@@ -40,10 +41,6 @@ defmodule Engines.Http do
   defp remote_fetch(url) do
     %HTTPoison.Response{body: image_binary, status_code: 200} = HTTPoison.get!(url)
     image_binary
-  end
-
-  defp host do
-    System.get_env("HTTP_HOST")
   end
 
   defp table_name do

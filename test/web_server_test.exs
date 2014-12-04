@@ -72,7 +72,7 @@ defmodule WebServerTest do
   end
 
   test "admin GET image" do
-    host = System.get_env("HTTP_HOST")
+    host = System.get_env("HTTP_ENGINE_HOST")
     expected_body = "{\"convert\":[],\"fetch\":\"#{host}/attachments/20141020T085657-7831/Sainsbury's Spooky Speaker - image 1.jpg\",\"file\":null,\"format\":\"jpg\"}"
     req = conn(:get, @admin_valid_url)
           |> WebServer.call(@opts)
