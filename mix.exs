@@ -28,7 +28,8 @@ defmodule DragonflyServer.Mixfile do
       {:plug, "~> 0.8.0"},
       {:jazz, "~> 0.2.1"},
       {:httpoison, "~> 0.5"},
-      {:porcelain, "~> 2.0"}
+      {:porcelain, "~> 2.0"},
+      {:memcache, github: "ananthakumaran/memcache-ex"}
     ]
   end
 

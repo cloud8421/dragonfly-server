@@ -5,7 +5,7 @@ defmodule Job do
     {format, data} = job
                       |> deserialize
                       |> execute
-    Job.Cache.MemoryStore.set(job, format, data)
+    DragonflyServer.cache_store.set(job, format, data)
     {format, data}
   end
 
@@ -16,7 +16,7 @@ defmodule Job do
   end
 
   def expire(job) do
-    Job.Cache.MemoryStore.delete(job)
+    DragonflyServer.cache_store.delete(job)
     job
     |> deserialize
     |> do_expire
