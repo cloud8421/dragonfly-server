@@ -6,4 +6,7 @@ config :processor,
   job_worker_timeout: 15000,
   http_fetch_timeout: 10000
 
+config :cache,
+  store: :memcached
+
 import_config "#{Mix.env}.exs"

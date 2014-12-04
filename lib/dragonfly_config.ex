@@ -39,6 +39,14 @@ defmodule DragonflyServer.Config do
     Application.get_env(:processor, :convert_command) || "convert"
   end
 
+  def cache_store do
+    do_cache_store(Application.get_env(:cache, :store))
+  end
+
+  defp do_cache_store(nil), do: :memory
+  defp do_cache_store(:memory), do: :memory
+  defp do_cache_store(:memcached), do: :memcached
+
   def memcached_servers do
     do_memcached_servers(System.get_env("MEMCACHED_SERVERS"))
   end
