@@ -1,7 +1,11 @@
 defmodule Engines.HttpSup do
-  def start do
-    import Supervisor.Spec, warn: false
+  use Supervisor
 
+  def start_link do
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init([]) do
     :ets.new(http_engine_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
 
     children = [
@@ -12,7 +16,8 @@ defmodule Engines.HttpSup do
             max_restarts: 10,
             max_seconds: 1,
             name: __MODULE__]
-    Supervisor.start_link(children, opts)
+
+    supervise(children, opts)
   end
 
   def http_engine_cache_table_name, do: :http_engine_cache

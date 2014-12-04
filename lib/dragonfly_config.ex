@@ -38,4 +38,20 @@ defmodule DragonflyServer.Config do
   def convert_command do
     Application.get_env(:processor, :convert_command) || "convert"
   end
+
+  def memcached_servers do
+    do_memcached_servers(System.get_env("MEMCACHED_SERVERS"))
+  end
+
+  defp do_memcached_servers(nil), do: nil
+  defp do_memcached_servers(servers_string) do
+    servers_string
+    |> String.split(",")
+    |> Enum.map(fn (x) -> String.split(x, ":") end)
+    |> Enum.with_index
+    |> Enum.map(fn ({[host, port], index}) ->
+      name = String.to_atom("memcached#{index}")
+      {name, %{hostname: host, port: String.to_integer(port)}}
+    end)
+  end
 end
