@@ -1,6 +1,5 @@
 defmodule DragonflyServer do
   use Application
-  alias DragonflyServer.Config
 
   def start(_type, _args) do
     import Supervisor.Spec

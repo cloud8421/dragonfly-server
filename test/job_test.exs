@@ -6,7 +6,7 @@ defmodule JobTest do
   test "creates a command from job payload" do
     payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQwMTIzVDE3NTc0NS0yODIzL1VudGl0bGVkLnBuZyJdLFsicCIsImNvbnZlcnQiLCItdGh1bWJuYWlsIDI3M3gyNzNeXiAtZ3Jhdml0eSBjZW50ZXIgLWNyb3AgMjczeDI3MyswKzAgK3JlcGFnZSAtZHJhdyAncG9seWdvbiAwLDAgMjczLDI3MyAyNzMsMCBmaWxsIG5vbmUgbWF0dGUgMTM1LDEzNSBmbG9vZGZpbGwnIiwicG5nIl1d"
     expected = %Steps{fetch: "#{System.get_env("HTTP_HOST")}/attachments/20140123T175745-2823/Untitled.png",
-      convert: "#{DragonflyServer.Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' -strip png:-",
+      convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' -strip png:-",
       format: "png"}
     assert(expected == Job.deserialize(payload))
   end
@@ -22,7 +22,7 @@ defmodule JobTest do
 
   test "supports local files" do
     payload = "W1siZmYiLCIvYXBwL2FwcC9hc3NldHMvaW1hZ2VzL2RlZmF1bHRfYXJ0aWNsZV9pbWFnZS5wbmciXSxbInAiLCJ0aHVtYiIsIjEwMHgxMDAjIl0sWyJlIiwianBnIl1d"
-    expected = %Steps{file: "/app/app/assets/images/default_article_image.png", format: "jpg", convert: "#{DragonflyServer.Config.convert_command} - -thumbnail 100x100# -strip jpg:-"}
+    expected = %Steps{file: "/app/app/assets/images/default_article_image.png", format: "jpg", convert: "#{Config.convert_command} - -thumbnail 100x100# -strip jpg:-"}
     assert(expected == Job.deserialize(payload))
   end
 

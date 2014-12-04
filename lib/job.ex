@@ -1,5 +1,4 @@
 defmodule Job do
-  alias DragonflyServer.Config
 
   def process(job) do
     {format, data} = job

@@ -1,6 +1,4 @@
 defmodule Engines.Fs do
-  alias DragonflyServer.Config
-
   def fetch(path) do
     {:ok, image_binary} = abs_path(path) |> File.read
     image_binary

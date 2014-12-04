@@ -1,4 +1,4 @@
-defmodule DragonflyServer.Config do
+defmodule Config do
   def http_port, do: do_http_port(System.get_env("PORT"))
 
   defp do_http_port(nil), do: 4000

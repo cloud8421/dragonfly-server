@@ -1,6 +1,5 @@
 defmodule Job.Sup do
   use Supervisor
-  alias DragonflyServer.Config
 
   def start_link do
     Supervisor.start_link(__MODULE__, [], name: __MODULE__)

@@ -1,6 +1,6 @@
 defmodule Steps do
   import Steps.Sanitize
-  import DragonflyServer.Config, only: [convert_command: 0]
+  import Config, only: [convert_command: 0]
   use Jazz
 
   @default_image_format "jpg"

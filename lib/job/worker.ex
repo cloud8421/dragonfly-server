@@ -1,6 +1,5 @@
 defmodule Job.Worker do
   use GenServer
-  alias DragonflyServer.Config
 
   ## Public api
 

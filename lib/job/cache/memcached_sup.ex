@@ -13,7 +13,7 @@ defmodule Job.Cache.MemcachedSup do
   end
 
   defp init_store do
-    pool_names = DragonflyServer.Config.memcached_servers
+    pool_names = Config.memcached_servers
                  |> Enum.map(fn({name, _data}) -> name end)
     worker(Job.Cache.MemcachedStore, [pool_names], [])
   end
@@ -25,7 +25,7 @@ defmodule Job.Cache.MemcachedSup do
       max_overflow: 2
     ]
 
-    Enum.map(DragonflyServer.Config.memcached_servers, fn({name, conf}) ->
+    Enum.map(Config.memcached_servers, fn({name, conf}) ->
       opts = worker_pool_options ++ [name: {:local, name}]
       :poolboy.child_spec(name, opts, conf)
     end)
