@@ -8,9 +8,9 @@ config :processor,
   http_fetch_timeout: 10000,
   convert_command: "convert"
 
-config :cache,
-  store: :memcached
-
+# config :cache,
+#   store: :memcached
+#
 # config :web_server,
 #   acceptors: 50
 #
