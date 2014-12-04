@@ -1,19 +1,17 @@
 defmodule Job.Cache.MemcachedStoreWorker do
   use GenServer
+  alias Memcache.Connection
 
-  def delete(cache_key) do
-    # GenServer.cast(__MODULE__, {:delete, cache_key})
+  def delete(worker, cache_key) do
+    GenServer.cast(worker, {:delete, cache_key})
   end
 
-  def get(cache_key) do
-    # case :ets.lookup(table_name, cache_key) do
-    #   [] -> nil
-    #   [{_key, format, content}] -> {format, content}
-    # end
+  def get(worker, cache_key) do
+    GenServer.call(worker, {:get, cache_key})
   end
 
-  def set(cache_key, format, value) do
-    # GenServer.cast(__MODULE__, {:set, cache_key, format, value})
+  def set(worker, cache_key, format, value) do
+    GenServer.cast(worker, {:set, cache_key, format, value})
   end
 
   def start_link(opts) do
@@ -22,17 +20,27 @@ defmodule Job.Cache.MemcachedStoreWorker do
 
   def init(opts) do
     server_opts = Map.to_list(opts)
-    mcd_pid = Memcache.Connection.start_link(server_opts)
-    {:ok, mcd_pid}
+    Connection.start_link(server_opts)
   end
 
-  def handle_cast({:set, cache_key, format, value}, state) do
-    # :ets.insert(table_name, {cache_key, format, value})
-    {:noreply, state}
+  def handle_call({:get, cache_key}, _from, mcd_pid) do
+    content_result = Connection.execute(mcd_pid, :GET, [cache_key])
+    format_result = Connection.execute(mcd_pid, :GET, ["#{cache_key}-format"])
+    case {content_result, format_result} do
+      {{:ok, content}, {:ok, format}} -> {:reply, {format, content}, mcd_pid}
+      _ -> {:reply, nil, mcd_pid}
+    end
   end
 
-  def handle_cast({:delete, cache_key}, state) do
-    # :ets.delete(table_name, cache_key)
-    {:noreply, state}
+  def handle_cast({:set, cache_key, format, value}, mcd_pid) do
+    { :ok } = Connection.execute(mcd_pid, :SET, ["#{cache_key}-format", format])
+    { :ok } = Connection.execute(mcd_pid, :SET, [cache_key, value])
+    {:noreply, mcd_pid}
+  end
+
+  def handle_cast({:delete, cache_key}, mcd_pid) do
+    { :ok } = Connection.execute(mcd_pid, :DELETE, [cache_key])
+    { :ok } = Connection.execute(mcd_pid, :DELETE, ["#{cache_key}-format"])
+    {:noreply, mcd_pid}
   end
 end
