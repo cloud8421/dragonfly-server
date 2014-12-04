@@ -1,7 +1,8 @@
 defmodule DragonflyServer.Config do
-  def http_port do
-    (System.get_env("PORT") |> String.to_integer) || 4000
-  end
+  def http_port, do: do_http_port(System.get_env("PORT"))
+
+  defp do_http_port(nil), do: 4000
+  defp do_http_port(port_string), do: String.to_integer(port_string)
 
   def http_acceptors do
     Application.get_env(:web_server, :acceptors) || 50
