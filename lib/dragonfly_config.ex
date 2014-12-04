@@ -8,10 +8,6 @@ defmodule DragonflyServer.Config do
     Application.get_env(:web_server, :acceptors) || 50
   end
 
-  def worker_pool_size do
-    Application.get_env(:process_worker_pool, :size) || 50
-  end
-
   def worker_pool_max_overflow do
     worker_pool_size * 0.05 |> trunc
   end
@@ -26,6 +22,10 @@ defmodule DragonflyServer.Config do
 
   def fs_base_path do
     Application.get_env(:storage, :base_path) || System.cwd
+  end
+
+  def worker_pool_size do
+    Application.get_env(:processor, :job_worker_pool_size) || 50
   end
 
   def job_worker_timeout do
