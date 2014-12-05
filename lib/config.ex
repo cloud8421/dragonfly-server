@@ -56,6 +56,18 @@ defmodule Config do
     do_memcached_servers(System.get_env("MEMCACHED_SERVERS"))
   end
 
+  def memcached_user do
+    System.get_env("MEMCACHED_USER")
+  end
+
+  def memcached_password do
+    System.get_env("MEMCACHED_PASSWORD")
+  end
+
+  def memcached_needs_auth? do
+    memcached_user && memcached_password
+  end
+
   defp do_memcached_servers(nil), do: nil
   defp do_memcached_servers(servers_string) do
     servers_string

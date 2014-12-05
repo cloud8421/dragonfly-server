@@ -29,7 +29,7 @@ defmodule DragonflyServer.Mixfile do
       {:jazz, "~> 0.2.1"},
       {:httpoison, "~> 0.5"},
       {:porcelain, "~> 2.0"},
-      {:memcache, github: "ananthakumaran/memcache-ex"}
+      {:memcache, github: "cloud8421/memcache-ex", branch: "add-sasl-support"}
     ]
   end
 

@@ -20,7 +20,10 @@ defmodule Job.Cache.MemcachedStoreWorker do
 
   def init(opts) do
     server_opts = Map.to_list(opts)
-    Connection.start_link(server_opts)
+    {:ok, mcd_pid} = Connection.start_link(server_opts)
+    if Config.memcached_needs_auth? do
+      authenticate!(mcd_pid)
+    end
   end
 
   def handle_call({:get, cache_key}, _from, mcd_pid) do
@@ -42,5 +45,12 @@ defmodule Job.Cache.MemcachedStoreWorker do
     { :ok } = Connection.execute(mcd_pid, :DELETE, [cache_key])
     { :ok } = Connection.execute(mcd_pid, :DELETE, ["#{cache_key}-format"])
     {:noreply, mcd_pid}
+  end
+
+  defp authenticate!(mcd_pid) do
+    case Connection.execute(mcd_pid, :AUTH_REQUEST, [Config.memcached_user, Config.memcached_password]) do
+      {:ok, :authenticated} -> {:ok, mcd_pid}
+      {:error, _} -> {:stop, :authentication_failure}
+    end
   end
 end
