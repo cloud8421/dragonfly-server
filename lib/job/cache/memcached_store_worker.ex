@@ -23,6 +23,8 @@ defmodule Job.Cache.MemcachedStoreWorker do
     {:ok, mcd_pid} = Connection.start_link(server_opts)
     if Config.memcached_needs_auth? do
       authenticate!(mcd_pid)
+    else
+      {:ok, mcd_pid}
     end
   end
 
