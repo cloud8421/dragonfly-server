@@ -50,7 +50,7 @@ defmodule Job.Cache.MemcachedStoreWorker do
   end
 
   defp authenticate!(mcd_pid) do
-    case Connection.execute(mcd_pid, :AUTH_REQUEST, [Config.memcached_user, Config.memcached_password]) do
+    case Connection.execute(mcd_pid, :AUTH_REQUEST, [Config.memcached_username, Config.memcached_password]) do
       {:ok, :authenticated} -> {:ok, mcd_pid}
       {:error, _} -> {:stop, :authentication_failure}
     end
