@@ -79,4 +79,8 @@ defmodule Config do
       {name, %{hostname: host, port: String.to_integer(port)}}
     end)
   end
+
+  def new_relic_license do
+    System.get_env("NEW_RELIC_LICENSE_KEY")
+  end
 end

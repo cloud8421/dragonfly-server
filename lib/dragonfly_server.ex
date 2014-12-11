@@ -10,12 +10,19 @@ defmodule DragonflyServer do
     children = [
       supervisor(cache_sup(Config.cache_store), []),
       supervisor(Job.Sup, []),
-      supervisor(Engines.HttpSup, [])
+      supervisor(Engines.HttpSup, []),
+      supervisor(Analytics.Sup, [])
     ]
 
     opts = [strategy: :one_for_one, name: __MODULE__]
 
-    Supervisor.start_link(children, opts)
+    result = Supervisor.start_link(children, opts)
+
+    if Mix.env == :prod do
+      start_new_relic
+    end
+
+    result
   end
 
   defp cache_sup(:memory), do: Job.Cache.MemorySup
@@ -25,4 +32,15 @@ defmodule DragonflyServer do
 
   defp do_cache_store(:memory), do: Job.Cache.MemoryStore
   defp do_cache_store(:memcached), do: Job.Cache.MemcachedStore
+
+  defp start_new_relic do
+    if Config.new_relic_license do
+      license_key = Config.new_relic_license |> String.to_char_list
+      name = "Dragonfly-#{Mix.env}" |> String.to_char_list
+      :application.set_env(:newrelic, :license_key, license_key)
+      :application.set_env(:newrelic, :application_name, name)
+      :statman_server.add_subscriber(:statman_aggregator)
+      :newrelic_poller.start_link(&:newrelic_statman.poll/0)
+    end
+  end
 end

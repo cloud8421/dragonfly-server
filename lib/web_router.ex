@@ -6,6 +6,9 @@ defmodule WebRouter do
   @max_age 31536000 # 1 year
 
   # Plug order matters, as they are inserted as middlewares
+  if Mix.env == :prod do
+    plug Plug.NewRelic
+  end
   plug Plug.Logger
   plug Plug.Head
   plug :match
