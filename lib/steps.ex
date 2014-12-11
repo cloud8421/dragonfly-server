@@ -30,7 +30,7 @@ defmodule Steps do
     do_deserialize(tail, %Steps{acc | file: path})
   end
   defp do_deserialize([["p", "thumb", size] | tail], acc) do
-    normalized = ["p", "convert", "-thumbnail #{size}", @default_image_format]
+    normalized = ["p", "convert", Size.expand(size), @default_image_format]
     do_deserialize([normalized | tail], acc)
   end
   defp do_deserialize([["p", "convert", instructions, format] | tail], acc) do

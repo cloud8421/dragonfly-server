@@ -22,7 +22,7 @@ defmodule JobTest do
 
   test "supports local files" do
     payload = "W1siZmYiLCIvYXBwL2FwcC9hc3NldHMvaW1hZ2VzL2RlZmF1bHRfYXJ0aWNsZV9pbWFnZS5wbmciXSxbInAiLCJ0aHVtYiIsIjEwMHgxMDAjIl0sWyJlIiwianBnIl1d"
-    expected = %Steps{file: "/app/app/assets/images/default_article_image.png", format: "jpg", convert: "#{Config.convert_command} - -thumbnail 100x100# -strip jpg:-"}
+    expected = %Steps{file: "/app/app/assets/images/default_article_image.png", format: "jpg", convert: "#{Config.convert_command} - -resize 100x100^^ -gravity center -crop 100x100+0+0 +repage -strip jpg:-"}
     assert(expected == Job.deserialize(payload))
   end
 

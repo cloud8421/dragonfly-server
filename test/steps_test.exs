@@ -7,7 +7,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %Steps{fetch: "#{System.get_env("HTTP_ENGINE_HOST")}/attachments/20141002T152132-285/Untitled.jpg",
-                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -thumbnail 892x320# -strip jpg:-",
+                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -resize 892x320^^ -gravity center -crop 892x320+0+0 +repage -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.deserialize(steps))
   end
@@ -18,7 +18,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %Steps{fetch: "http://img.youtube.com/vi/lFaO7LDqSmk/0.jpg",
-                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -thumbnail 892x320# -strip jpg:-",
+                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -resize 892x320^^ -gravity center -crop 892x320+0+0 +repage -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.deserialize(steps))
   end
@@ -29,7 +29,7 @@ defmodule StepsTest do
              ["p", "thumb", "892x320#"],
              ["e", "jpg"]]
     commands = %Steps{file: "/app/foo.jpg",
-                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -thumbnail 892x320# -strip jpg:-",
+                convert: "#{Config.convert_command} - -thumbnail 273x273^^ -gravity center -crop 273x273+0+0 +repage -draw 'polygon 0,0 273,273 273,0 fill none matte 135,135 floodfill' jpg:- | #{Config.convert_command} - -resize 892x320^^ -gravity center -crop 892x320+0+0 +repage -strip jpg:-",
                 format: "jpg"}
     assert(commands == Steps.deserialize(steps))
   end
