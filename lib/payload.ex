@@ -1,8 +1,7 @@
 defmodule Payload do
-  use Jazz
-
   def decode(payload) do
-    Base64.decode(payload)
-    |> JSON.decode!
+    {:ok, decoded} = Base64.decode(payload)
+    |> JSX.decode
+    decoded
   end
 end

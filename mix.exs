@@ -26,7 +26,7 @@ defmodule DragonflyServer.Mixfile do
       {:dotenv, "~> 0.0.3"},
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 0.9.0"},
-      {:jazz, "~> 0.2.1"},
+      {:exjsx, "~> 3.1.0"},
       {:httpoison, "~> 0.5"},
       {:porcelain, "~> 2.0"},
       {:memcache, github: "cloud8421/memcache-ex", branch: "add-sasl-support"},

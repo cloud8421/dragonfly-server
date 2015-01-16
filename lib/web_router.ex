@@ -1,7 +1,6 @@
 defmodule WebRouter do
   import Plug.Conn
   use Plug.Router
-  use Jazz
 
   @max_age 31536000 # 1 year
 

@@ -1,7 +1,6 @@
 defmodule Steps do
   import Steps.Sanitize
   import Config, only: [convert_command: 0]
-  use Jazz
 
   @default_image_format "jpg"
 
@@ -11,7 +10,8 @@ defmodule Steps do
             format: @default_image_format
 
   def to_json(steps_struct) do
-    JSON.encode! steps_struct
+    {:ok, json} = JSX.encode(steps_struct)
+    json
   end
 
   def deserialize(decoded_payload) do
