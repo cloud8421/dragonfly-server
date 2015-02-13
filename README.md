@@ -6,7 +6,6 @@ This application can be used to serve Dragonfly urls.
 
 # Limitations
 
-- Caching is done in memory and (for now) it has no cap, so if you run this, you will eventually run out of memory.
 - Doesn't support the full Dragonfly feature set (for now).
 - Limited to Imagemagick.
 
@@ -18,7 +17,7 @@ This application can be used to serve Dragonfly urls.
 
 **IMPORTANT**: Due to a known bug in Erlang 17.3, fetching urls with an `https` scheme are not processed correctly and throw an exception.
 
-Please use Erlang 17.1, available at <https://www.erlang-solutions.com/downloads/download-erlang-otp>.
+Please use Erlang 17.2, available at <https://www.erlang-solutions.com/downloads/download-erlang-otp>.
 
 #### Elixir
 
@@ -89,10 +88,7 @@ From the command line:
 
 ## Deploy on Heroku
 
-The app runs only on Cedar and requires the multi-buildpack as:
-
-- it uses a custom Elixir buildback (it includes Goon)
-- it uses the imagemagick buildpack.
+The app runs only on Cedar-14 and requires the multi-buildpack as it uses a custom Elixir buildback (it includes Goon).
 
 Buildpacks are defined in `.buildpacks`.
 
