@@ -1,5 +1,5 @@
 defmodule WebServerTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   use Plug.Test
 
   import Mock
@@ -62,6 +62,22 @@ defmodule WebServerTest do
             |> WebServer.call(@opts)
       assert req2.status == 401
       assert nil == List.keyfind(req2.resp_headers, "ETag", 0)
+    end
+  end
+
+  test "it returns 404 when image is not found" do
+    with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> {:error, :not_found} end] do
+      req = conn(:get, @valid_url)
+            |> WebServer.call(@opts)
+      # {"ETag", etag} = List.keyfind(req.resp_headers, "ETag", 0)
+      # {"cache-control", expire} = List.keyfind(req.resp_headers, "cache-control", 0)
+      # {"Content-Type", content_type} = List.keyfind(req.resp_headers, "Content-Type", 0)
+      # {"Content-Disposition", disp} = List.keyfind(req.resp_headers, "Content-Disposition", 0)
+      assert req.status == 404
+      # assert etag == @valid_etag
+      # assert expire == "public, max-age=31536000"
+      # assert content_type = "image/jpg"
+      # assert disp == "filename=\"sample.jpg\""
     end
   end
 

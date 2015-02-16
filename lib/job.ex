@@ -1,11 +1,16 @@
 defmodule Job do
 
   def process(job) do
-    {format, data} = job
-                      |> deserialize
-                      |> execute
-    DragonflyServer.cache_store.set(job, format, data)
-    {format, data}
+    result = job
+              |> deserialize
+              |> execute
+    case result do
+      {format, {:error, error}} ->
+        {format, {:error, error}}
+      {format, data} ->
+        DragonflyServer.cache_store.set(job, format, data)
+        {format, data}
+    end
   end
 
   def deserialize(job) do

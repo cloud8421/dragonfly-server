@@ -51,9 +51,13 @@ defmodule WebRouter do
         nil -> compute_image(payload)
         match -> match
       end
-      conn
-      |> add_headers(format, filename)
-      |> resp(200, response)
+      case response do
+        {:error, error} -> conn
+                            |> resp(404, to_string(error))
+        _ -> conn
+              |> add_headers(format, filename)
+              |> resp(200, response)
+      end
     else
       resp(conn, 401, "Not a valid sha")
     end

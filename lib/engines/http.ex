@@ -23,9 +23,13 @@ defmodule Engines.Http do
   def handle_call({:fetch, url}, _from, state) do
     case :ets.lookup(table_name, url) do
       [] ->
-        data = remote_fetch(url)
-        :ets.insert(table_name, {url, data})
-        {:reply, data, state}
+        case remote_fetch(url) do
+          {:ok, data} ->
+            :ets.insert(table_name, {url, data})
+            {:reply, data, state}
+          error = {:error, reason} ->
+            {:reply, error, state}
+        end
       [{^url, cached_data}] ->
         {:reply, cached_data, state}
     end
@@ -39,8 +43,11 @@ defmodule Engines.Http do
   ## Private
 
   defp remote_fetch(url) do
-    %HTTPoison.Response{body: image_binary, status_code: 200} = HTTPoison.get!(url)
-    image_binary
+    case HTTPoison.get!(url) do
+      %HTTPoison.Response{body: image_binary, status_code: 200} ->
+        {:ok, image_binary}
+      _ -> {:error, :not_found} 
+    end
   end
 
   defp table_name do
