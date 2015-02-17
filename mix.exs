@@ -30,6 +30,7 @@ defmodule DragonflyServer.Mixfile do
       {:httpoison, "~> 0.5"},
       {:porcelain, "~> 2.0"},
       {:memcache, github: "cloud8421/memcache-ex", branch: "add-sasl-support"},
+      {:recon, "~> 2.2.0"},
       {:newrelic, github: "wooga/newrelic-erlang"}
     ]
   end
