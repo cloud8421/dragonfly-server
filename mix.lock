@@ -12,7 +12,7 @@
   "jsx": {:hex, :jsx, "2.4.0"},
   "lhttpc": {:git, "git://github.com/ferd/lhttpc.git", "de7e48fb1045bbe522fa01f7c2c7839d89f04f88", [ref: "master"]},
   "meck": {:git, "git://github.com/eproxus/meck.git", "dde759050eff19a1a80fd854d7375174b191665d", [tag: "0.8.2"]},
-  "memcache": {:git, "git://github.com/cloud8421/memcache-ex.git", "90661826c43742c5a5f86d3858c6f4f6cfcbce50", [branch: "add-sasl-support"]},
+  "memcache": {:git, "git://github.com/cloud8421/memcache-ex.git", "f7915dc0f90427d19f8ffcc245bceb38613f83ce", [branch: "hibernate"]},
   "mock": {:git, "git://github.com/jjh42/mock.git", "9952e1b7b8a1e0ec1af15cac6a736fcdb0dcc170", []},
   "newrelic": {:git, "git://github.com/wooga/newrelic-erlang.git", "ce63c4a69561d3677f45334ba2c93876b4661229", []},
   "parse_trans": {:git, "git://github.com/uwiger/parse_trans.git", "5a7bba2697be32fa4cf5823ee0dc4883d8c0f8af", [branch: "master"]},
