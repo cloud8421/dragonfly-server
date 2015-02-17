@@ -32,21 +32,21 @@ defmodule Job.Cache.MemcachedStoreWorker do
     content_result = Connection.execute(mcd_pid, :GET, [cache_key])
     format_result = Connection.execute(mcd_pid, :GET, ["#{cache_key}-format"])
     case {content_result, format_result} do
-      {{:ok, content}, {:ok, format}} -> {:reply, {format, content}, mcd_pid}
-      _ -> {:reply, nil, mcd_pid}
+      {{:ok, content}, {:ok, format}} -> {:reply, {format, content}, mcd_pid, :hibernate}
+      _ -> {:reply, nil, mcd_pid, :hibernate}
     end
   end
 
   def handle_cast({:set, cache_key, format, value}, mcd_pid) do
     { :ok } = Connection.execute(mcd_pid, :SET, ["#{cache_key}-format", format])
     { :ok } = Connection.execute(mcd_pid, :SET, [cache_key, value])
-    {:noreply, mcd_pid}
+    {:noreply, mcd_pid, :hibernate}
   end
 
   def handle_cast({:delete, cache_key}, mcd_pid) do
     { :ok } = Connection.execute(mcd_pid, :DELETE, [cache_key])
     { :ok } = Connection.execute(mcd_pid, :DELETE, ["#{cache_key}-format"])
-    {:noreply, mcd_pid}
+    {:noreply, mcd_pid, :hibernate}
   end
 
   defp authenticate!(mcd_pid) do

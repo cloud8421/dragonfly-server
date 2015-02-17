@@ -26,18 +26,18 @@ defmodule Engines.Http do
         case remote_fetch(url) do
           {:ok, data} ->
             :ets.insert(table_name, {url, data})
-            {:reply, data, state}
+            {:reply, data, state, :hibernate}
           error = {:error, reason} ->
-            {:reply, error, state}
+            {:reply, error, state, :hibernate}
         end
       [{^url, cached_data}] ->
-        {:reply, cached_data, state}
+        {:reply, cached_data, state, :hibernate}
     end
   end
 
   def handle_cast({:expire, url}, state) do
     :ets.delete(table_name, url)
-    {:noreply, state}
+    {:noreply, state, :hibernate}
   end
 
   ## Private

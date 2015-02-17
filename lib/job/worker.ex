@@ -27,16 +27,16 @@ defmodule Job.Worker do
 
   def handle_call({:process, job}, _from, state) do
     data = Job.process(job)
-    {:reply, data, state}
+    {:reply, data, state, :hibernate}
   end
 
   def handle_call({:examine, job}, _from, state) do
     data = Job.deserialize(job)
-    {:reply, data, state}
+    {:reply, data, state, :hibernate}
   end
 
   def handle_call({:expire, job}, _from, state) do
     Job.expire(job)
-    {:reply, :ok, state}
+    {:reply, :ok, state, :hibernate}
   end
 end
