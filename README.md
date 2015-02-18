@@ -86,6 +86,12 @@ From the command line:
 
     $ curl http://example.com/admin/media/12345
 
+## Stats api
+
+A stats endpoint is available to see the current status of the app (available workers, etc.):
+
+    $ curl http://example.com/stats
+
 ## Deploy on Heroku
 
 The app runs only on Cedar-14 and requires the multi-buildpack as it uses a custom Elixir buildback (it includes Goon).
