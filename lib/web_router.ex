@@ -23,6 +23,10 @@ defmodule WebRouter do
     resp(conn, 202, "Scheduled deletion")
   end
 
+  get "/stats" do
+    resp(conn, 200, Stats.collect |> Stats.to_json)
+  end
+
   get "/admin/media/:payload" do
     if verify_payload(conn, payload) do
       data = examine_image(payload)
