@@ -52,7 +52,10 @@ defmodule Job do
   defp execute(steps) do
     case get_base_image(steps) do
       {:ok, base_image} ->
-        {:ok, {steps.format, base_image |> transform(steps.convert)}}
+        case transform(base_image, steps.convert) do
+          {:ok, data} -> {:ok, {steps.format, data}}
+          error -> error
+        end
       error -> error
     end
   end
@@ -67,7 +70,7 @@ defmodule Job do
   defp transform(image_data, transformation_command) do
     opts = [in: image_data, out: :iodata]
     case Porcelain.shell(transformation_command, opts) do
-      %Porcelain.Result{status: 0, out: out} -> IO.iodata_to_binary(out)
+      %Porcelain.Result{status: 0, out: out} -> {:ok, IO.iodata_to_binary(out)}
       _ -> {:error, :transformation_failed}
     end
   end
