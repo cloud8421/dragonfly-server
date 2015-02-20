@@ -17,6 +17,6 @@ before_script:
   - mix local.hex --force
   - MIX_ENV=test mix deps.get
 env:
-  - PORT=4000 HTTP_HOST=http://example.com
+  - PORT=4000 HTTP_ENGINE_HOST=http://example.com
 script:
   - CONVERT_COMMAND=convert MIX_ENV=test mix test
