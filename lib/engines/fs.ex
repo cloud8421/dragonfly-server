@@ -1,7 +1,6 @@
 defmodule Engines.Fs do
   def fetch(path) do
-    {:ok, image_binary} = abs_path(path) |> File.read
-    image_binary
+    abs_path(path) |> File.read
   end
 
   defp abs_path(path = "/" <> _rest), do: path

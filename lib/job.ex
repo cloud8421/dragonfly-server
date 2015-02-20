@@ -42,8 +42,11 @@ defmodule Job do
     {steps.format, get_base_image(steps)}
   end
   defp execute(steps) do
-    base_image = get_base_image(steps)
-    {steps.format, base_image |> transform(steps.convert)}
+    case get_base_image(steps) do
+      {:ok, base_image} -> {steps.format, base_image
+                                          |> transform(steps.convert)}
+      error = {:error, error} -> error
+    end
   end
 
   defp get_base_image(%Steps{fetch: url}) when is_binary(url) do

@@ -24,14 +24,14 @@ defmodule Engines.Http do
     case :ets.lookup(table_name, url) do
       [] ->
         case remote_fetch(url) do
-          {:ok, data} ->
+          success = {:ok, data} ->
             :ets.insert(table_name, {url, data})
-            {:reply, data, state, :hibernate}
+            {:reply, success, state, :hibernate}
           error = {:error, reason} ->
             {:reply, error, state, :hibernate}
         end
       [{^url, cached_data}] ->
-        {:reply, cached_data, state, :hibernate}
+        {:reply, {:ok, cached_data}, state, :hibernate}
     end
   end
 
