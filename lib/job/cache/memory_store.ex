@@ -8,7 +8,8 @@ defmodule Job.Cache.MemoryStore do
   def get(cache_key) do
     case :ets.lookup(table_name, cache_key) do
       [] -> nil
-      [{_key, format, content}] -> {format, content}
+      [{_key, format, data}] ->
+        %Job.Result{format: format, data: data}
     end
   end
 

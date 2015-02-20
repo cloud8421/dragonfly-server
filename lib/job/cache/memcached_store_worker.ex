@@ -29,10 +29,12 @@ defmodule Job.Cache.MemcachedStoreWorker do
   end
 
   def handle_call({:get, cache_key}, _from, mcd_pid) do
-    content_result = Connection.execute(mcd_pid, :GET, [cache_key])
+    data_result = Connection.execute(mcd_pid, :GET, [cache_key])
     format_result = Connection.execute(mcd_pid, :GET, ["#{cache_key}-format"])
-    case {content_result, format_result} do
-      {{:ok, content}, {:ok, format}} -> {:reply, {format, content}, mcd_pid, :hibernate}
+    case {data_result, format_result} do
+      {{:ok, data}, {:ok, format}} ->
+        job_result = %Job.Result{format: format, data: data}
+        {:reply, job_result, mcd_pid, :hibernate}
       _ -> {:reply, nil, mcd_pid, :hibernate}
     end
   end

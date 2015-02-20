@@ -1,15 +1,20 @@
 defmodule Job do
+  defmodule Result do
+    defstruct format: nil,
+              data: nil,
+              error: nil
+  end
 
   def process(job) do
-    result = job
-              |> deserialize
-              |> execute
+    des = job |> deserialize
+    result = des |> execute
     case result do
-      {format, {:error, error}} ->
-        {format, {:error, error}}
-      {format, {:ok, data}} ->
+      {:error, error} ->
+        {:error, %Result{format: des.format, error: error}}
+      {:ok, {format, data}} ->
         DragonflyServer.cache_store.set(job, format, data)
-        {format, {:ok, data}}
+        {:ok, %Result{format: format,
+                      data: data}}
     end
   end
 
@@ -39,13 +44,16 @@ defmodule Job do
   def do_expire(_), do: nil
 
   defp execute(steps = %Steps{convert: []}) do
-    {steps.format, get_base_image(steps)}
+    case get_base_image(steps) do
+      {:ok, data} -> {:ok, {steps.format, data}}
+      error -> error
+    end
   end
   defp execute(steps) do
     case get_base_image(steps) do
-      {:ok, base_image} -> {steps.format, {:ok, base_image
-                                                |> transform(steps.convert)}}
-      error = {:error, error} -> error
+      {:ok, base_image} ->
+        {:ok, {steps.format, base_image |> transform(steps.convert)}}
+      error -> error
     end
   end
 
