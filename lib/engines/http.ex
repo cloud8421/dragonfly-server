@@ -46,7 +46,7 @@ defmodule Engines.Http do
     case HTTPoison.get!(url) do
       %HTTPoison.Response{body: image_binary, status_code: 200} ->
         {:ok, image_binary}
-      _ -> {:error, :not_found} 
+      _ -> {:error, :not_found}
     end
   end
 
