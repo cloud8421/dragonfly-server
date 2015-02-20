@@ -43,8 +43,8 @@ defmodule Job do
   end
   defp execute(steps) do
     case get_base_image(steps) do
-      {:ok, base_image} -> {steps.format, base_image
-                                          |> transform(steps.convert)}
+      {:ok, base_image} -> {steps.format, {:ok, base_image
+                                                |> transform(steps.convert)}}
       error = {:error, error} -> error
     end
   end
