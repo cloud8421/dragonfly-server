@@ -7,9 +7,9 @@ defmodule Job do
     case result do
       {format, {:error, error}} ->
         {format, {:error, error}}
-      {format, data} ->
+      {format, {:ok, data}} ->
         DragonflyServer.cache_store.set(job, format, data)
-        {format, data}
+        {format, {:ok, data}}
     end
   end
 

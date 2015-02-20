@@ -67,7 +67,7 @@ defmodule WebRouter do
   defp fetch_or_compute_image(payload) do
     case DragonflyServer.cache_store.get(payload) do
       nil -> compute_image(payload)
-      match -> match
+      {format, data} -> {format, {:ok, data}}
     end
   end
 
