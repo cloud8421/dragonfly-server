@@ -55,9 +55,9 @@ defmodule WebRouter do
       {format, response} = fetch_or_compute_image(payload)
       case response do
         {:error, error} -> conn |> resp(422, error |> to_string)
-        _ -> conn
+        {:ok, data} -> conn
               |> add_headers(format, filename)
-              |> resp(200, response)
+              |> resp(200, data)
       end
     else
       conn |> resp(401, "Not a valid sha")
