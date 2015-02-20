@@ -3,6 +3,7 @@ defmodule WebRouter do
   use Plug.Router
 
   @max_age 31536000 # 1 year
+  @url_scheme "/media/:payload/:filename"
 
   # Plug order matters, as they are inserted as middlewares
   if Mix.env == :prod do
@@ -18,16 +19,16 @@ defmodule WebRouter do
     use Plug.Debugger, otp_app: :dragonfly_server
   end
 
-  delete "/admin/media/:payload" do
-    :ok = expire_image(payload)
-    resp(conn, 202, "Scheduled deletion")
-  end
-
   get "/stats" do
     resp(conn, 200, Stats.collect |> Stats.to_json)
   end
 
-  get "/admin/media/:payload" do
+  delete "/admin#{@url_scheme}" do
+    :ok = expire_image(payload)
+    resp(conn, 202, "Scheduled deletion")
+  end
+
+  get "/admin#{@url_scheme}" do
     if verify_payload(conn, payload) do
       data = examine_image(payload)
              |> Steps.to_json
@@ -39,7 +40,7 @@ defmodule WebRouter do
     end
   end
 
-  get "/media/:payload/:filename" do
+  get @url_scheme do
     conn
     |> fetch_params
     |> handle_image_response(payload, filename)

@@ -70,17 +70,17 @@ Given an image url in the form of:
 
 It can be deleted by sending a `DELETE` request to the following endpoint:
 
-    http://example.com/admin/media/12345
+    http://example.com/admin/media/12345/untitled.jpg
 
 From the command line:
 
-    $ curl -XDELETE http://example.com/admin/media/12345
+    $ curl -XDELETE http://example.com/admin/media/12345/untitled.jpg
 
 The expected response is a `202`, which indicates that the cache expiry has been scheduled and will be performed asyncronously.
 
 The steps necessary to generate the image can also be examined at:
 
-    http://example.com/admin/media/12345
+    http://example.com/admin/media/12345/untitled.jpg
 
 From the command line:
 
