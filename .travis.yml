@@ -6,9 +6,10 @@ before_install:
   - unzip -d elixir Precompiled.zip
   - wget https://github.com/alco/goon/releases/download/v1.1.0/goon_linux_amd64.tar.gz
   - tar -xf goon_linux_amd64.tar.gz
-  - sudo add-apt-repository -y ppa:moti-p/cc
+  - sudo add-apt-repository -y "deb http://cz.archive.ubuntu.com/ubuntu precise-updates main"
   - sudo apt-get update
-  - sudo apt-get -y --reinstall install imagemagick
+  - sudo apt-get -y --reinstall install libjpeg62 libpng12-0 imagemagick
+  - convert --version
 cache:
   directories:
     - deps
