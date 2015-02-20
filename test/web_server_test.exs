@@ -70,15 +70,10 @@ defmodule WebServerTest do
     with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> {:error, :not_found} end] do
       req = conn(:get, @valid_url)
             |> WebServer.call(@opts)
-      # {"ETag", etag} = List.keyfind(req.resp_headers, "ETag", 0)
-      # {"cache-control", expire} = List.keyfind(req.resp_headers, "cache-control", 0)
-      # {"Content-Type", content_type} = List.keyfind(req.resp_headers, "Content-Type", 0)
-      # {"Content-Disposition", disp} = List.keyfind(req.resp_headers, "Content-Disposition", 0)
-      assert req.status == 404
-      # assert etag == @valid_etag
-      # assert expire == "public, max-age=31536000"
-      # assert content_type = "image/jpg"
-      # assert disp == "filename=\"sample.jpg\""
+      {"cache-control", expire} = List.keyfind(req.resp_headers, "cache-control", 0)
+      assert req.status == 422
+      assert nil == List.keyfind(req.resp_headers, "ETag", 0)
+      assert expire == "max-age=0, private, must-revalidate"
     end
   end
 

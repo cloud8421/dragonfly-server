@@ -51,19 +51,22 @@ defmodule WebRouter do
 
   defp handle_image_response(conn, payload, filename) do
     if verify_payload(conn, payload) do
-      {format, response} = case DragonflyServer.cache_store.get(payload) do
-        nil -> compute_image(payload)
-        match -> match
-      end
+      {format, response} = fetch_or_compute_image(payload)
       case response do
-        {:error, error} -> conn
-                            |> resp(404, to_string(error))
+        {:error, error} -> conn |> resp(422, error |> to_string)
         _ -> conn
               |> add_headers(format, filename)
               |> resp(200, response)
       end
     else
-      resp(conn, 401, "Not a valid sha")
+      conn |> resp(401, "Not a valid sha")
+    end
+  end
+
+  defp fetch_or_compute_image(payload) do
+    case DragonflyServer.cache_store.get(payload) do
+      nil -> compute_image(payload)
+      match -> match
     end
   end
 
