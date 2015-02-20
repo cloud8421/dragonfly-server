@@ -16,6 +16,10 @@ defmodule Job.Cache.MemoryStore do
     GenServer.cast(__MODULE__, {:set, cache_key, format, value})
   end
 
+  def clear do
+    GenServer.cast(__MODULE__, :clear)
+  end
+
   ## Callbacks
 
   def start_link do
@@ -29,6 +33,11 @@ defmodule Job.Cache.MemoryStore do
 
   def handle_cast({:delete, cache_key}, state) do
     :ets.delete(table_name, cache_key)
+    {:noreply, state}
+  end
+
+  def handle_cast(:clear, state) do
+    :ets.delete_all_objects(table_name)
     {:noreply, state}
   end
 

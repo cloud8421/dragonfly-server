@@ -11,6 +11,7 @@ defmodule WebServerTest do
 
   setup do
     Application.put_env(:security, :verify_urls, false)
+    Job.Cache.MemoryStore.clear
     :ok
   end
 
