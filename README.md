@@ -56,6 +56,12 @@ Starts the app and opens a console.
 
     $ mix test
 
+## General api
+
+Images are served at the entry point defined in `config.exs`, set as default at `/media/:payload/:filename`.
+
+Note that both params in the url scheme are needed by the application.
+
 ## Admin api
 
 The app exposes an admin api that can be used to programmatically expire an image and all its associated resources.

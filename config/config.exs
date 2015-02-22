@@ -8,11 +8,14 @@ config :processor,
   http_fetch_timeout: 10000,
   convert_command: "convert"
 
+# mount_at defines the entry point for the api. It has to contain
+# a :payload and a :filename param
+config :web_server,
+  mount_at: "/media/:payload/:filename"
+  # acceptors: 50
+
 # config :cache,
 #   store: :memcached
-#
-# config :web_server,
-#   acceptors: 50
 #
 # config :security,
 #   verify_urls: true,
