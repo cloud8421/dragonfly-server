@@ -21,21 +21,21 @@ defmodule Job.Cache.MemcachedStore do
     result = with_random_pool(state, fn(w) ->
       Job.Cache.MemcachedStoreWorker.get(w, cache_key)
     end)
-    {:reply, result, state}
+    {:reply, result, state, :hibernate}
   end
 
   def handle_cast({:set, cache_key, format, value}, state) do
     with_random_pool(state, fn(w) ->
       Job.Cache.MemcachedStoreWorker.set(w, cache_key, format, value)
     end)
-    {:noreply, state}
+    {:noreply, state, :hibernate}
   end
 
   def handle_cast({:delete, cache_key}, state) do
     with_random_pool(state, fn(w) ->
       Job.Cache.MemcachedStoreWorker.delete(w, cache_key)
     end)
-    {:noreply, state}
+    {:noreply, state, :hibernate}
   end
 
   def start_link(pool_names) do
