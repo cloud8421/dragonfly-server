@@ -40,6 +40,9 @@ defmodule Steps do
   defp do_deserialize([["e", format] | tail], acc) do
     do_deserialize(tail, %Steps{acc | format: format})
   end
+  defp do_deserialize([["e", format, format_opts] | tail], acc) do
+    do_deserialize(tail, %Steps{acc | format: format, convert: [format_opts | acc.convert]})
+  end
 
   defp compact(steps) do
     normalized_converts = steps.convert
