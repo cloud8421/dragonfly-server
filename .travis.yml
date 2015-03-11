@@ -6,7 +6,6 @@ before_install:
   - unzip -d elixir Precompiled.zip
   - wget https://github.com/alco/goon/releases/download/v1.1.0/goon_linux_amd64.tar.gz
   - tar -xf goon_linux_amd64.tar.gz
-  - bin/travis-install-imagemagick.sh
   - convert --version
 cache:
   directories:
