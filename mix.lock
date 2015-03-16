@@ -5,7 +5,7 @@
   "edown": {:git, "git://github.com/uwiger/edown.git", "d62ec85281e451a46ba30045917c119d65b72a84", [tag: "0.5"]},
   "exjsx": {:hex, :exjsx, "3.1.0"},
   "hackney": {:hex, :hackney, "1.0.6"},
-  "httpoison": {:hex, :httpoison, "0.6.1"},
+  "httpoison": {:hex, :httpoison, "0.6.2"},
   "idna": {:hex, :idna, "1.0.2"},
   "jazz": {:hex, :jazz, "0.2.1"},
   "jiffy": {:git, "https://github.com/davisp/jiffy.git", "137d3d94b6ee10001d761d412cbbe7f665680c98", [ref: "master"]},
