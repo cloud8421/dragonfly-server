@@ -6,10 +6,6 @@ defmodule Engines.Http do
     GenServer.call(__MODULE__, {:fetch, url}, Config.http_fetch_timeout)
   end
 
-  def expire(url) do
-    GenServer.cast(__MODULE__, {:expire, url})
-  end
-
   def url_from_path(path) do
     http_engine_host <> "/" <> path
   end
@@ -21,23 +17,12 @@ defmodule Engines.Http do
   end
 
   def handle_call({:fetch, url}, _from, state) do
-    case :ets.lookup(table_name, url) do
-      [] ->
-        case remote_fetch(url) do
-          success = {:ok, data} ->
-            :ets.insert(table_name, {url, data})
-            {:reply, success, state, :hibernate}
-          error = {:error, reason} ->
-            {:reply, error, state, :hibernate}
-        end
-      [{^url, cached_data}] ->
-        {:reply, {:ok, cached_data}, state, :hibernate}
+    case remote_fetch(url) do
+      success = {:ok, data} ->
+        {:reply, success, state, :hibernate}
+      error = {:error, reason} ->
+        {:reply, error, state, :hibernate}
     end
-  end
-
-  def handle_cast({:expire, url}, state) do
-    :ets.delete(table_name, url)
-    {:noreply, state, :hibernate}
   end
 
   ## Private
@@ -48,9 +33,5 @@ defmodule Engines.Http do
         {:ok, image_binary}
       _ -> {:error, :not_found}
     end
-  end
-
-  defp table_name do
-    Engines.HttpSup.http_engine_cache_table_name
   end
 end

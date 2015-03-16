@@ -26,9 +26,6 @@ defmodule Job do
 
   def expire(job) do
     DragonflyServer.cache_store.delete(job)
-    job
-    |> deserialize
-    |> do_expire
   end
 
   def hash_from_payload(job) do
@@ -37,11 +34,6 @@ defmodule Job do
     |> Crypt.hmac256(Config.secret)
     |> String.slice(0, 16)
   end
-
-  def do_expire(%{fetch: url}) do
-    Engines.Http.expire(url)
-  end
-  def do_expire(_), do: nil
 
   defp execute(steps = %Steps{convert: []}) do
     case get_base_image(steps) do

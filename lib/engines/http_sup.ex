@@ -6,8 +6,6 @@ defmodule Engines.HttpSup do
   end
 
   def init([]) do
-    :ets.new(http_engine_cache_table_name, [:named_table, :public, {:read_concurrency, true}])
-
     children = [
       worker(Engines.Http, [])
     ]
@@ -19,6 +17,4 @@ defmodule Engines.HttpSup do
 
     supervise(children, opts)
   end
-
-  def http_engine_cache_table_name, do: :http_engine_cache
 end
