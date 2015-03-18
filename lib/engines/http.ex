@@ -18,9 +18,9 @@ defmodule Engines.Http do
 
   def handle_call({:fetch, url}, _from, state) do
     case remote_fetch(url) do
-      success = {:ok, data} ->
+      success = {:ok, _data} ->
         {:reply, success, state, :hibernate}
-      error = {:error, reason} ->
+      error = {:error, _reason} ->
         {:reply, error, state, :hibernate}
     end
   end
