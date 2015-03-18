@@ -4,7 +4,7 @@ use Mix.Config
 
 config :processor,
   job_worker_timeout: 15000,
-  job_worker_pool_size: 50,
+  job_worker_pool_size: 10,
   http_fetch_timeout: 10000,
   convert_command: "convert"
 
