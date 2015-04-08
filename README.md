@@ -21,7 +21,7 @@ Please use Erlang >= 17.4, available at <https://www.erlang-solutions.com/downlo
 
 #### Elixir
 
-To install elixir on a Mac, `brew install elixir` (you may need to `brew update` first to retrieve 1.0.1).
+To install elixir on a Mac, `brew install elixir` (you may need to `brew update` first).
 
 Alternatively, you can follow [these instructions](http://elixir-lang.org/install.html).
 
