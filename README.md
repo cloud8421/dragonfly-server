@@ -17,7 +17,7 @@ This application can be used to serve Dragonfly urls.
 
 **IMPORTANT**: Due to a known bug in Erlang 17.3, fetching urls with an `https` scheme are not processed correctly and throw an exception.
 
-Please use Erlang 17.2, available at <https://www.erlang-solutions.com/downloads/download-erlang-otp>.
+Please use Erlang >= 17.4, available at <https://www.erlang-solutions.com/downloads/download-erlang-otp>.
 
 #### Elixir
 
