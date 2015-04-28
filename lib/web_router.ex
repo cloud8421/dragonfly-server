@@ -18,10 +18,6 @@ defmodule WebRouter do
     use Plug.Debugger, otp_app: :dragonfly_server
   end
 
-  get "/stats" do
-    resp(conn, 200, Stats.collect |> Stats.to_json)
-  end
-
   delete "/admin#{Application.get_env(:web_server, :mount_at)}" do
     :ok = expire_image(payload)
     resp(conn, 202, "Scheduled deletion")

@@ -30,7 +30,6 @@ defmodule DragonflyServer.Mixfile do
       {:exjsx, "~> 3.1.0"},
       {:httpoison, "~> 0.5"},
       {:porcelain, "~> 2.0"},
-      {:recon, "~> 2.2.0"},
       {:memcache, github: "cloud8421/memcache-ex", branch: "hibernate"},
       {:newrelic, github: "wooga/newrelic-erlang"}
     ]
@@ -40,6 +39,6 @@ defmodule DragonflyServer.Mixfile do
   defp app_list(:test), do: [:dotenv | app_list]
   defp app_list(_), do: app_list
   defp app_list do
-    [:logger, :httpoison, :porcelain, :cowboy, :plug, :statman, :newrelic, :recon]
+    [:logger, :httpoison, :porcelain, :cowboy, :plug, :statman, :newrelic]
   end
 end
