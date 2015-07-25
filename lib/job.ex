@@ -12,7 +12,7 @@ defmodule Job do
       {:error, error} ->
         {:error, %Result{format: des.format, error: error}}
       {:ok, {format, data}} ->
-        DragonflyServer.cache_store.set(job, format, data)
+        DragonflyServer.cache_store.set(cache_key(job), format, data)
         {:ok, %Result{format: format,
                       data: data}}
     end
@@ -25,7 +25,7 @@ defmodule Job do
   end
 
   def expire(job) do
-    DragonflyServer.cache_store.delete(job)
+    DragonflyServer.cache_store.delete(cache_key(job))
   end
 
   def hash_from_payload(job) do
@@ -33,6 +33,10 @@ defmodule Job do
     |> Payload.decode
     |> Crypt.hmac256(Config.secret)
     |> String.slice(0, 16)
+  end
+
+  def cache_key(job) do
+    Crypt.sha256(job)
   end
 
   defp execute(steps = %Steps{convert: []}) do

@@ -1,5 +1,6 @@
 defmodule WebRouter do
   import Plug.Conn
+  import Job, only: [cache_key: 1]
   use Plug.Router
 
   @max_age 31536000 # 1 year
@@ -62,7 +63,7 @@ defmodule WebRouter do
   end
 
   defp fetch_or_compute_image(payload) do
-    case DragonflyServer.cache_store.get(payload) do
+    case DragonflyServer.cache_store.get(cache_key(payload)) do
       nil -> compute_image(payload)
       match -> {:ok, match}
     end

@@ -34,6 +34,12 @@ defmodule JobTest do
     end
   end
 
+  test "creates sha256 cache keys" do
+    payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQwMTIzVDE3NTc0NS0yODIzL1VudGl0bGVkLnBuZyJdLFsicCIsImNvbnZlcnQiLCItdGh1bWJuYWlsIDI3M3gyNzNeXiAtZ3Jhdml0eSBjZW50ZXIgLWNyb3AgMjczeDI3MyswKzAgK3JlcGFnZSAtZHJhdyAncG9seWdvbiAwLDAgMjczLDI3MyAyNzMsMCBmaWxsIG5vbmUgbWF0dGUgMTM1LDEzNSBmbG9vZGZpbGwnIiwicG5nIl1d"
+    expected = "f7c9d202f0b544a95110711c9d850d3f6fc4ab72738667a69509e66b6705b0a7"
+    assert(expected == Job.cache_key(payload))
+  end
+
   defp parse_png_header(<<
     0x89, "PNG", 0x0D, 0x0A, 0x1A, 0x0A,
     _length :: size(32),
