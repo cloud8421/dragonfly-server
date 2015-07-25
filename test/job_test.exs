@@ -30,7 +30,30 @@ defmodule JobTest do
     payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQwMTIzVDE3NTc0NS0yODIzL1VudGl0bGVkLnBuZyJdLFsicCIsImNvbnZlcnQiLCItdGh1bWJuYWlsIDI3M3gyNzNeXiAtZ3Jhdml0eSBjZW50ZXIgLWNyb3AgMjczeDI3MyswKzAgK3JlcGFnZSAtZHJhdyAncG9seWdvbiAwLDAgMjczLDI3MyAyNzMsMCBmaWxsIG5vbmUgbWF0dGUgMTM1LDEzNSBmbG9vZGZpbGwnIiwicG5nIl1d"
     with_mock Engines.Http, [:passthrough], [fetch: fn(_url) -> {:ok, Fixtures.sample_image} end] do
       {:ok, %Job.Result{format: "png", data: data}} = Job.process(payload)
-      assert data == Fixtures.sample_transformed_image
+      assert parse_png_header(data) == parse_png_header(Fixtures.sample_transformed_image)
     end
+  end
+
+  defp parse_png_header(<<
+    0x89, "PNG", 0x0D, 0x0A, 0x1A, 0x0A,
+    _length :: size(32),
+    "IHDR",
+    width :: size(32),
+    height :: size(32),
+    bit_depth,
+    color_type,
+    compression_method,
+    filter_method,
+    interlace_method,
+    _crc :: size(32),
+    _chunks :: binary>>)
+  do
+    %{width: width,
+      height: height,
+      bit_depth: bit_depth,
+      color_type: color_type,
+      compression: compression_method,
+      filter: filter_method,
+      interlace: interlace_method}
   end
 end
