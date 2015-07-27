@@ -6,7 +6,8 @@ config :processor,
   job_worker_timeout: 15000,
   job_worker_pool_size: 10,
   http_fetch_timeout: 10000,
-  convert_command: "convert"
+  convert_command: "convert",
+  sign_urls: false
 
 # mount_at defines the entry point for the api. It has to contain
 # a :payload and a :filename param

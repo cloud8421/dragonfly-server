@@ -31,7 +31,8 @@ defmodule DragonflyServer.Mixfile do
       {:httpoison, "~> 0.5"},
       {:porcelain, "~> 2.0"},
       {:memcache, github: "cloud8421/memcache-ex", branch: "hibernate"},
-      {:newrelic, github: "wooga/newrelic-erlang"}
+      {:newrelic, github: "wooga/newrelic-erlang"},
+      {:aws_auth, "~> 0.2.4"}
     ]
   end
 
