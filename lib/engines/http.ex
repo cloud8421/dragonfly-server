@@ -1,13 +1,23 @@
 defmodule Engines.Http do
   use GenServer
-  import Config, only: [http_engine_host: 0]
+  use Timex
+  import Config, only: [http_engine_host: 0,
+                        aws_access_key_id: 0,
+                        aws_secret_access_key: 0,
+                        aws_region: 0,
+                        sign_urls: 0]
 
   def fetch(url) do
     GenServer.call(__MODULE__, {:fetch, url}, Config.http_fetch_timeout)
   end
 
   def url_from_path(path) do
-    http_engine_host <> "/" <> path
+    url = http_engine_host <> "/" <> path
+    if sign_urls do
+      sign_url(url)
+    else
+      url
+    end
   end
 
   ## Callbacks
@@ -26,6 +36,12 @@ defmodule Engines.Http do
   end
 
   ## Private
+
+  defp sign_url(url, date \\ Date.now) do
+    headers = HashDict.new
+    AWSAuth.sign_url(aws_access_key_id, aws_secret_access_key,
+                     "GET", url, aws_region, "s3", headers, date)
+  end
 
   defp remote_fetch(url) do
     case HTTPoison.get!(url) do

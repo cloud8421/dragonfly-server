@@ -24,6 +24,29 @@ defmodule Config do
     System.get_env("HTTP_ENGINE_HOST")
   end
 
+  def aws_access_key_id do
+    System.get_env("AWS_ACCESS_KEY_ID")
+    || System.get_env("AMAZON_ACCESS_KEY_ID")
+    || System.get_env("AWS_ACCESS_KEY")
+  end
+
+  def aws_secret_access_key do
+    System.get_env("AWS_SECRET_ACCESS_KEY")
+    || System.get_env("AMAZON_SECRET_ACCESS_KEY")
+    || System.get_env("AWS_SECRET_KEY")
+  end
+
+  def aws_region do
+    System.get_env("AWS_REGION")
+    || System.get_env("AMAZON_REGION")
+    || System.get_env("AWS_DEFAULT_REGION")
+    || "us-east-1"
+  end
+
+  def sign_urls do
+    Application.get_env(:processor, :sign_urls) || false
+  end
+
   def fs_base_path do
     Application.get_env(:storage, :base_path) || System.cwd
   end
