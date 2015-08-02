@@ -38,7 +38,6 @@ defmodule WebRouter do
 
   get Application.get_env(:web_server, :mount_at) do
     conn
-    |> fetch_params
     |> handle_image_response(payload, filename)
   end
 
@@ -71,7 +70,7 @@ defmodule WebRouter do
 
   defp verify_payload(conn, payload) do
     if needs_to_verify_urls do
-      case conn.params do
+      case fetch_params(conn).params do
         %{"sha" => sha} -> is_genuine_job(sha, payload)
         _ -> false
       end

@@ -91,4 +91,21 @@ defmodule WebServerTest do
     assert req.status == 200
     assert req.resp_body == expected_body
   end
+
+  test "admin GET image with sha" do
+    Application.put_env(:security, :verify_urls, true)
+    Application.put_env(:security, :secret, "test-key")
+    payload = "W1siZiIsImF0dGFjaG1lbnRzLzIwMTQxMDIwVDA4NTY1Ny03ODMxL1NhaW5zYnVyeSdzIFNwb29reSBTcGVha2VyIC0gaW1hZ2UgMS5qcGciXV0"
+    hashed_job = Job.hash_from_payload(payload)
+    url = @admin_valid_url <> "?sha=" <> hashed_job
+    invalid_url = @admin_valid_url <> "?sha=foo"
+
+    req = conn(:get, url)
+          |> WebServer.call(@opts)
+    assert req.status == 200
+
+    req2 = conn(:get, invalid_url)
+          |> WebServer.call(@opts)
+    assert req2.status == 404
+  end
 end
