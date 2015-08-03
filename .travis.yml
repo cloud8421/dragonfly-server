@@ -1,18 +1,17 @@
 language: erlang
 otp_release:
-   - 17.1
+   - 17.4
+sudo: false
 before_install:
-  - wget https://github.com/elixir-lang/elixir/releases/download/v1.0.2/Precompiled.zip
+  - wget https://github.com/elixir-lang/elixir/releases/download/v1.0.5/Precompiled.zip
   - unzip -d elixir Precompiled.zip
-  - wget https://github.com/alco/goon/releases/download/v1.1.0/goon_linux_amd64.tar.gz
+  - wget https://github.com/alco/goon/releases/download/v1.1.1/goon_linux_amd64.tar.gz
   - tar -xf goon_linux_amd64.tar.gz
-  - sudo add-apt-repository -y "deb http://cz.archive.ubuntu.com/ubuntu precise-updates main"
-  - sudo apt-get update
-  - sudo apt-get -y --reinstall install libjpeg62 libpng12-0 imagemagick
   - convert --version
 cache:
   directories:
     - deps
+    - _build
 before_script:
   - export PATH=`pwd`/elixir/bin:$PATH
   - mix local.hex --force
