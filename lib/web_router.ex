@@ -1,5 +1,4 @@
 defmodule WebRouter do
-  import Plug.Conn
   import Job, only: [cache_key: 1]
   use Plug.Router
 
@@ -20,11 +19,13 @@ defmodule WebRouter do
   end
 
   delete "/admin#{Application.get_env(:web_server, :mount_at)}" do
+    _ = filename
     :ok = expire_image(payload)
     resp(conn, 202, "Scheduled deletion")
   end
 
   get "/admin#{Application.get_env(:web_server, :mount_at)}" do
+    _ = filename
     if verify_payload(conn, payload) do
       data = examine_image(payload)
              |> Steps.to_json
