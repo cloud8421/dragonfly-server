@@ -33,7 +33,7 @@ defmodule WebServerTest do
       assert req.status == 200
       assert etag == @valid_etag
       assert expire == "public, max-age=31536000"
-      assert content_type = "image/jpg"
+      assert content_type == "image/jpg"
       assert disp == "filename=\"sample.jpg\""
     end
   end
