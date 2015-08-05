@@ -31,6 +31,7 @@ defmodule Job do
   def hash_from_payload(job) do
     job
     |> Payload.decode
+    |> Steps.to_unique_string
     |> Crypt.hmac256(Config.secret)
     |> String.slice(0, 16)
   end

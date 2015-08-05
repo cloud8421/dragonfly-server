@@ -33,4 +33,30 @@ defmodule StepsTest do
                 format: "jpg"}
     assert(commands == Steps.deserialize(steps))
   end
+
+  test "understands convert options hash" do
+    steps = [["ff", "/app/foo.jpg"],
+             ["p", "convert", "-resize 100x100^", %{"format" => "png", "frame" => 1}]]
+    commands = %Steps{file: "/app/foo.jpg",
+                convert: "#{Config.convert_command} -'[1]' -resize 100x100^ -strip png:-",
+                format: "png", frame: 1}
+    assert(commands == Steps.deserialize(steps))
+  end
+
+  test "understands thumb options hash" do
+    steps = [["ff", "/app/foo.jpg"],
+             ["p", "thumb", "100x100^", %{"format" => "png", "frame" => 1}]]
+    commands = %Steps{file: "/app/foo.jpg",
+                convert: "#{Config.convert_command} -'[1]' -resize 100x100^ -strip png:-",
+                format: "png", frame: 1}
+    assert(commands == Steps.deserialize(steps))
+  end
+
+  test "reduces steps to unique string" do
+    steps = [["f", "attachments/20141002T152132-285/Untitled.jpg"],
+             ["p", "thumb", "892x320#", %{"frame" => 0, "format" => "jpg"}]]
+    unique_string = "fattachments/20141002T152132-285/Untitled.jpgpthumb892x320#formatjpgframe0"
+
+    assert(unique_string == Steps.to_unique_string(steps))
+  end
 end
