@@ -81,9 +81,11 @@ defmodule Steps do
     # The `-` after the first convert command tells ImageMagick to use stdin
     # The `-strip` flag removes exif data from the images
     # The `jpeg:-` notation tells ImageMagick to pipe the output to stdout in the
-    # specified format
-    # To support animated gifs, we extract the first frame with '[0]'
-    joined_converts = Enum.join(converts, " #{format}:- | #{convert_command} - ")
+    # specified format. The lossless Magick Image File Format is used for
+    # intermediate steps.
+    # We must specify the input frame so only a single output image is generated
+    # for animated gifs or pdfs.
+    joined_converts = Enum.join(converts, " miff:- | #{convert_command} - ")
     "#{convert_command} -'[#{frame}]' #{joined_converts} -strip #{format}:-"
   end
 end
