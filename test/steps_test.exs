@@ -34,6 +34,15 @@ defmodule StepsTest do
     assert(commands == Steps.deserialize(steps))
   end
 
+  test "support convert without format" do
+    steps = [["ff", "/app/foo.jpg"],
+             ["p", "convert", "-resize 100x100^"]]
+    commands = %Steps{file: "/app/foo.jpg",
+                convert: "#{Config.convert_command} -'[0]' -resize 100x100^ -strip jpg:-",
+                format: "jpg", frame: 0}
+    assert(commands == Steps.deserialize(steps))
+  end
+
   test "understands convert options hash" do
     steps = [["ff", "/app/foo.jpg"],
              ["p", "convert", "-resize 100x100^", %{"format" => "png", "frame" => 1}]]
@@ -49,6 +58,22 @@ defmodule StepsTest do
     commands = %Steps{file: "/app/foo.jpg",
                 convert: "#{Config.convert_command} -'[1]' -resize 100x100^ -strip png:-",
                 format: "png", frame: 1}
+    assert(commands == Steps.deserialize(steps))
+  end
+
+  test "understands long encode syntax" do
+    steps = [["ff", "/app/foo.jpg"],
+             ["p", "encode", "png"]]
+    commands = %Steps{file: "/app/foo.jpg",
+                convert: [], format: "png", frame: 0}
+    assert(commands == Steps.deserialize(steps))
+  end
+
+  test "understands long encode syntax with format options" do
+    steps = [["ff", "/app/foo.jpg"],
+             ["p", "encode", "jpg", "-quality 50"]]
+    commands = %Steps{file: "/app/foo.jpg",
+                convert: "convert -'[0]' -quality 50 -strip jpg:-", format: "jpg", frame: 0}
     assert(commands == Steps.deserialize(steps))
   end
 
