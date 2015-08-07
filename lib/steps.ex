@@ -40,7 +40,7 @@ defmodule Steps do
     do_deserialize([normalized | tail], acc)
   end
   defp do_deserialize([["p", "thumb", size] | tail], acc) do
-    normalized = ["p", "convert", Size.expand(size), @default_image_format]
+    normalized = ["p", "convert", Size.expand(size)]
     do_deserialize([normalized | tail], acc)
   end
   defp do_deserialize([["p", "convert", instructions, options] | tail], acc) when is_map(options) do
@@ -51,8 +51,18 @@ defmodule Steps do
     new_acc = %Steps{acc | format: format, convert: [instructions | acc.convert]}
     do_deserialize(tail, new_acc)
   end
+  defp do_deserialize([["p", "convert", instructions] | tail], acc) do
+    new_acc = %Steps{acc | convert: [instructions | acc.convert]}
+    do_deserialize(tail, new_acc)
+  end
+  defp do_deserialize([["p", "encode", format] | tail], acc) do
+    do_deserialize(tail, %Steps{acc | format: format})
+  end
   defp do_deserialize([["e", format] | tail], acc) do
     do_deserialize(tail, %Steps{acc | format: format})
+  end
+  defp do_deserialize([["p", "encode", format, format_opts] | tail], acc) do
+    do_deserialize(tail, %Steps{acc | format: format, convert: [format_opts | acc.convert]})
   end
   defp do_deserialize([["e", format, format_opts] | tail], acc) do
     do_deserialize(tail, %Steps{acc | format: format, convert: [format_opts | acc.convert]})
